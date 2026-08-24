@@ -1,15 +1,19 @@
 {
   "expo": {
-    "name": "service-booking-mobile-app",
+    "name": "Service Booking",
     "slug": "service-booking-mobile-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "scheme": "servicebooking",
     "userInterfaceStyle": "light",
+    "backgroundColor": "#F8FAFC",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.timileyinquadri.servicebooking"
     },
     "android": {
+      "package": "com.timileyinquadri.servicebooking",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/android-icon-foreground.png",
@@ -20,6 +24,7 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": ["expo-asset", "expo-font", "@react-native-community/datetimepicker"]
   }
 }
