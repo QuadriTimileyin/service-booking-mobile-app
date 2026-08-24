@@ -1,3 +1,5 @@
+// React 19 requires this flag for `act()` support outside react-dom's test env.
+global.IS_REACT_ACT_ENVIRONMENT = true;
 
 // AsyncStorage has no native module under Jest; use the library's official mock.
 jest.mock('@react-native-async-storage/async-storage', () =>
@@ -50,3 +52,9 @@ jest.mock('react-native-reanimated', () => {
     withSpring: (value) => value,
   };
 });
+
+// Safe-area insets have no native provider under Jest.
+jest.mock(
+  'react-native-safe-area-context',
+  () => require('react-native-safe-area-context/jest/mock').default,
+);

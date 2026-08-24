@@ -166,6 +166,15 @@ Focused unit tests cover the logic that carries risk:
 - `filterServiceProviders` — case-insensitive search across name/company/
   category/city, category filtering, combined filters and the empty result.
 
+Screen tests (React Native Testing Library) cover the flows a reviewer would
+click through:
+
+- `LoginForm` — validation messages, malformed email, successful sign-in.
+- `ServicesScreen` — skeleton loading, rendered provider cards, search
+  filtering, the "no services found" empty state and the retryable error state.
+- `BookingsScreen` — empty state, a persisted booking, the rehydration guard and
+  delete-with-confirmation.
+
 ## Known Limitations
 
 - Authentication is mocked; there is no real identity provider or token refresh.

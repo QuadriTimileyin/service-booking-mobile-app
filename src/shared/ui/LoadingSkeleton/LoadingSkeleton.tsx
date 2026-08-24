@@ -49,7 +49,12 @@ export function ServiceCardSkeleton() {
 
 export function ServiceListSkeleton({ count = 5 }: { count?: number }) {
   return (
-    <View accessibilityLabel="Loading services" className="gap-3 px-4 pt-2">
+    <View
+      accessible
+      accessibilityRole="progressbar"
+      accessibilityLabel="Loading services"
+      className="gap-3 px-4 pt-2"
+    >
       {Array.from({ length: count }, (_, index) => (
         <ServiceCardSkeleton key={index} />
       ))}
