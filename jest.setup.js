@@ -1,12 +1,12 @@
-// React 19 requires this flag for `act()` support outside react-dom's test env.
+// React 19 needs this flag for act() outside the react-dom test environment.
 global.IS_REACT_ACT_ENVIRONMENT = true;
 
-// AsyncStorage has no native module under Jest; use the library's official mock.
+// AsyncStorage has no native module under Jest, so use the official mock.
 jest.mock('@react-native-async-storage/async-storage', () =>
   require('@react-native-async-storage/async-storage/jest/async-storage-mock'),
 );
 
-// Haptics are a no-op outside a device runtime.
+// Haptics do nothing outside a real device.
 jest.mock('expo-haptics', () => ({
   notificationAsync: jest.fn(() => Promise.resolve()),
   impactAsync: jest.fn(() => Promise.resolve()),
@@ -15,14 +15,14 @@ jest.mock('expo-haptics', () => ({
 }));
 
 /**
- * Reanimated's own mock still boots the native worklets runtime, which does not
- * exist under Jest. This stand-in covers the surface the app actually uses:
- * animated views render as plain views and animations resolve to their target.
+ * Reanimated's own mock still starts the native worklets runtime, which Jest
+ * does not have. This stand-in covers what the app uses: animated views render
+ * as plain views and animations settle on their target value.
  */
 jest.mock('react-native-reanimated', () => {
   const RN = require('react-native');
 
-  // Entering/exiting/layout builders are chainable: FadeInDown.delay(x).duration(y).
+  // Entering and layout builders chain, like FadeInDown.delay(x).duration(y).
   const builder = new Proxy(() => builder, {
     get: () => builder,
     apply: () => builder,
@@ -53,7 +53,7 @@ jest.mock('react-native-reanimated', () => {
   };
 });
 
-// Safe-area insets have no native provider under Jest.
+// Safe area insets have no native provider under Jest.
 jest.mock(
   'react-native-safe-area-context',
   () => require('react-native-safe-area-context/jest/mock').default,

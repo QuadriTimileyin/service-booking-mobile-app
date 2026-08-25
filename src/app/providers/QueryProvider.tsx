@@ -1,9 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useState } from 'react';
 
-/**
- * Server-state provider. Remote data lives here; Zustand owns client state.
- */
+/** Holds server state. Zustand handles the local app state. */
 export function QueryProvider({ children }: { children: React.ReactNode }) {
   const [client] = useState(
     () =>

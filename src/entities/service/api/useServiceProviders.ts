@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import type { ServiceProvider } from '../types';
 import { fetchServiceProviders, serviceQueryKeys } from './serviceProvidersApi';
 
-/** Server state for the provider collection. Owned by TanStack Query. */
+/** The provider list. TanStack Query owns this one. */
 export function useServiceProviders() {
   return useQuery({
     queryKey: serviceQueryKeys.all,
@@ -12,9 +12,8 @@ export function useServiceProviders() {
 }
 
 /**
- * Resolves a single provider from the cached collection, so navigation only has
- * to carry an id. Falls back to fetching when the cache is cold (deep link,
- * app resumed on the details screen).
+ * Picks one provider out of the cached list, so navigation only carries an id.
+ * Fetches first when the cache is empty.
  */
 export function useServiceProvider(id: number) {
   return useQuery({

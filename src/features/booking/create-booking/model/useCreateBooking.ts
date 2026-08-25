@@ -8,7 +8,7 @@ import {
 import type { ServiceProvider } from '../../../../entities/service';
 import type { BookingFormValues } from './bookingSchema';
 
-/** Turns a validated form submission plus a provider into a persisted booking. */
+/** Takes a valid form plus a provider and saves the booking. */
 export function useCreateBooking() {
   const addBooking = useBookingStore((state) => state.addBooking);
 

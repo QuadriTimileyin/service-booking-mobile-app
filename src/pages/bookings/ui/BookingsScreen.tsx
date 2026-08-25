@@ -74,7 +74,7 @@ export function BookingsScreen({ navigation }: Props) {
         </View>
       ) : null}
 
-      {/* Wait for AsyncStorage so a saved booking never flashes as "no bookings". */}
+      {/* Wait for storage first, else a saved booking flashes as "no bookings". */}
       {!hasHydrated ? (
         <View className="gap-3 px-4 pt-2">
           <ServiceCardSkeleton />

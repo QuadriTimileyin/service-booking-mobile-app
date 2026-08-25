@@ -13,7 +13,7 @@ interface SkeletonProps {
   className?: string;
 }
 
-/** A single shimmering block. Compose these to mirror the real layout. */
+/** One pulsing block. Stack a few to match the real layout. */
 export function Skeleton({ className = '' }: SkeletonProps) {
   const opacity = useSharedValue(0.5);
 
@@ -28,7 +28,7 @@ export function Skeleton({ className = '' }: SkeletonProps) {
   );
 }
 
-/** Placeholder that matches the shape of a `ServiceCard` while data loads. */
+/** Stand-in with the same shape as a service card while data loads. */
 export function ServiceCardSkeleton() {
   return (
     <View

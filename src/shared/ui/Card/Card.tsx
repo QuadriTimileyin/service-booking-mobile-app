@@ -4,7 +4,7 @@ interface CardProps extends ViewProps {
   className?: string;
 }
 
-/** The single card treatment used across the app: white, rounded, hairline border. */
+/** The one card style used everywhere: white, rounded, thin border. */
 export function Card({ className = '', children, ...rest }: CardProps) {
   return (
     <View

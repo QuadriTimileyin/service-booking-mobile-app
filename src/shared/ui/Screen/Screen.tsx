@@ -2,12 +2,12 @@ import { View, type ViewProps } from 'react-native';
 import { SafeAreaView, type Edge } from 'react-native-safe-area-context';
 
 interface ScreenProps extends ViewProps {
-  /** Which safe-area insets to apply; screens inside a tab bar skip the bottom. */
+  /** Which safe area edges to pad. Screens inside the tab bar skip the bottom. */
   edges?: readonly Edge[];
   className?: string;
 }
 
-/** Consistent page background, safe-area handling and horizontal rhythm. */
+/** Page background and safe area handling, same on every screen. */
 export function Screen({
   edges = ['top'],
   className = '',

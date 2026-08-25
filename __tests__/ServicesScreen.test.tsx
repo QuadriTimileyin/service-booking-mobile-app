@@ -43,7 +43,7 @@ describe('ServicesScreen', () => {
   });
 
   it('shows the loading skeleton before data arrives', async () => {
-    // Hold the response open so the pending state is observable.
+    // Keep the response open so we can see the loading state.
     let release: () => void = () => {};
     const pending = new Promise<void>((resolve) => {
       release = resolve;

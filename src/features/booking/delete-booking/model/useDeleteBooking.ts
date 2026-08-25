@@ -4,7 +4,7 @@ import { Alert } from 'react-native';
 
 import { useBookingStore, type Booking } from '../../../../entities/booking';
 
-/** Confirmation-guarded deletion, shared by every surface that removes a booking. */
+/** Delete with a confirmation first. Shared by anywhere that removes a booking. */
 export function useDeleteBooking() {
   const deleteBooking = useBookingStore((state) => state.deleteBooking);
 

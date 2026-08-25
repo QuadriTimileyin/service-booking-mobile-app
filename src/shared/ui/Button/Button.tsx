@@ -6,6 +6,8 @@ import {
   type PressableProps,
 } from 'react-native';
 
+import { colors } from '../../config/theme';
+
 type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'ghost';
 type ButtonSize = 'md' | 'lg';
 
@@ -70,7 +72,7 @@ export function Button({
       {loading ? (
         <ActivityIndicator
           size="small"
-          color={variant === 'primary' ? '#FFFFFF' : '#2563EB'}
+          color={variant === 'primary' ? colors.surface : colors.primary}
         />
       ) : (
         <View className="flex-row items-center gap-2">

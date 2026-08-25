@@ -1,10 +1,7 @@
 import type { JsonPlaceholderUser } from '../api/types';
 import { SERVICE_CATEGORIES, type ServiceCategory, type ServiceProvider } from '../types';
 
-/**
- * Categories are derived from the provider id rather than randomised, so the
- * same provider always offers the same service across renders and app restarts.
- */
+/** Category comes from the id, not random, so a provider keeps the same service. */
 export const resolveCategory = (id: number): ServiceCategory =>
   SERVICE_CATEGORIES[Math.abs(id - 1) % SERVICE_CATEGORIES.length];
 
@@ -22,8 +19,8 @@ const fallback = (value: string | undefined | null, placeholder: string): string
 };
 
 /**
- * Maps a JSONPlaceholder user onto a service provider. Missing or malformed
- * fields degrade to readable placeholders instead of rendering "undefined".
+ * Turns a JSONPlaceholder user into a service provider.
+ * Missing fields fall back to readable text instead of showing "undefined".
  */
 export function mapUserToServiceProvider(user: JsonPlaceholderUser): ServiceProvider {
   const category = resolveCategory(user.id);

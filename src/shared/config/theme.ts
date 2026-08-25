@@ -1,21 +1,24 @@
+import tokens from './tokens';
+
 /**
- * Design tokens that must be available to JavaScript APIs which cannot consume
- * Tailwind classes (navigation themes, RefreshControl tint, vector icons).
- * Keep these values in sync with `tailwind.config.js`.
+ * Flat colour list for the places that cannot take a Tailwind class: the
+ * navigation theme, vector icons and the pull-to-refresh spinner.
+ * The values come from tokens.js, so there is only one place to edit.
  */
 export const colors = {
-  primary: '#2563EB',
-  primaryDark: '#1D4ED8',
-  primarySoft: '#EFF6FF',
-  ink: '#0F172A',
-  inkMuted: '#64748B',
-  surface: '#FFFFFF',
-  surfaceMuted: '#F1F5F9',
-  page: '#F8FAFC',
-  line: '#E2E8F0',
-  success: '#16A34A',
-  danger: '#DC2626',
+  primary: tokens.colors.primary.DEFAULT,
+  primaryDark: tokens.colors.primary.dark,
+  primarySoft: tokens.colors.primary.soft,
+  ink: tokens.colors.ink.DEFAULT,
+  inkMuted: tokens.colors.ink.muted,
+  surface: tokens.colors.surface.DEFAULT,
+  surfaceMuted: tokens.colors.surface.muted,
+  page: tokens.colors.surface.page,
+  line: tokens.colors.line,
+  success: tokens.colors.success,
+  warning: tokens.colors.warning,
+  danger: tokens.colors.danger,
 } as const;
 
-/** Minimum touch target recommended by the iOS/Android accessibility guidelines. */
+/** Smallest tap target Apple and Google both recommend. */
 export const MIN_TOUCH_TARGET = 44;

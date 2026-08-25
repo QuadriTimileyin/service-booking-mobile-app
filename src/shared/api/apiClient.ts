@@ -10,10 +10,7 @@ export class ApiError extends Error {
   }
 }
 
-/**
- * Minimal typed `fetch` wrapper. Every remote call in the app goes through here
- * so timeout, status and parse failures are reported the same way.
- */
+/** One place for every network call, so timeouts and failures behave the same. */
 export async function apiGet<T>(path: string, signal?: AbortSignal): Promise<T> {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
@@ -35,8 +32,7 @@ export async function apiGet<T>(path: string, signal?: AbortSignal): Promise<T> 
     return (await response.json()) as T;
   } catch (error) {
     if (error instanceof ApiError) throw error;
-    // A caller-initiated abort (screen unmounted, query cancelled) is not a
-    // failure to report — let React Query discard it as a cancellation.
+    // The caller cancelled this one, so pass it through instead of reporting it.
     if (signal?.aborted) throw error;
     if (error instanceof Error && error.name === 'AbortError') {
       throw new ApiError('The request timed out. Please check your connection.');

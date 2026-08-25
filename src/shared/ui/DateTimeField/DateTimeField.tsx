@@ -36,10 +36,8 @@ const display = (mode: 'date' | 'time', value: string): string =>
   mode === 'date' ? formatDateLabel(value) : formatTimeLabel(value);
 
 /**
- * Native date/time picker presented as a form field.
- *
- * Android shows the platform dialog directly; iOS embeds the spinner in a sheet
- * with an explicit confirm action, which is the platform-expected behaviour.
+ * Native date and time picker shown as a form field.
+ * Android opens the platform dialog. iOS shows the spinner in a sheet with Done.
  */
 export function DateTimeField({
   label,

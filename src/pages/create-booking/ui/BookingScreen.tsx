@@ -19,8 +19,7 @@ export function BookingScreen({ route, navigation }: Props) {
   } = useServiceProvider(serviceId);
 
   const goToMyBookings = () => {
-    // Reset the services stack so returning to that tab lands on the list,
-    // not on the form for a booking that has already been made.
+    // Send the stack back to the list so the tab does not reopen a finished form.
     navigation.popToTop();
     navigation.getParent()?.navigate('BookingsTab');
   };

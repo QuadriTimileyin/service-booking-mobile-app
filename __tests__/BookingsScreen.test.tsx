@@ -69,7 +69,7 @@ describe('BookingsScreen', () => {
     );
     expect(useBookingStore.getState().bookings).toHaveLength(1);
 
-    // Confirming the dialog removes the booking.
+    // Confirming the dialog should remove the booking.
     const actions = alertSpy.mock.calls[0][2] as { text: string; onPress?: () => void }[];
     actions.find((action) => action.text === 'Delete')?.onPress?.();
     expect(useBookingStore.getState().bookings).toHaveLength(0);

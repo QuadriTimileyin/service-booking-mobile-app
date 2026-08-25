@@ -1,7 +1,4 @@
-/**
- * Bookings are persisted as plain strings (`YYYY-MM-DD` and `HH:mm`) so the
- * stored payload stays timezone-stable and JSON-serialisable.
- */
+/** Bookings keep date and time as plain strings, so storage stays simple. */
 
 export const toDateValue = (date: Date): string => {
   const year = date.getFullYear();

@@ -1,8 +1,4 @@
-/**
- * Param lists are declared in `shared/types/navigation` so page components can
- * type their props without importing the app layer. Re-exported here for
- * navigator definitions.
- */
+/** Param lists live in shared/types so pages can type props without importing app. */
 export type {
   AuthStackParamList,
   MainTabParamList,

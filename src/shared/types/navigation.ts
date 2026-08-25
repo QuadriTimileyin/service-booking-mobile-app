@@ -1,12 +1,9 @@
 import type { NavigatorScreenParams } from '@react-navigation/native';
 
 /**
- * Navigation param lists live in `shared` so that page components can type their
- * props without importing from the `app` layer, which would invert the
- * Feature-Sliced dependency direction.
- *
- * Screens receive ids only; the corresponding entity is resolved from the query
- * cache or the store.
+ * Param lists sit in shared so pages can type their props without importing app,
+ * which would break the layer rule. Screens carry ids only. The entity itself is
+ * read from the query cache or the store.
  */
 export type ServicesStackParamList = {
   Services: undefined;

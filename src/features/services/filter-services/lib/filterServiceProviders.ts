@@ -8,10 +8,7 @@ interface FilterOptions {
   category: CategoryFilterValue;
 }
 
-/**
- * Case-insensitive search across provider name, company, category and city,
- * combined with the selected category chip.
- */
+/** Searches name, company, category and city. Case does not matter. */
 export function filterServiceProviders(
   providers: ServiceProvider[],
   { query, category }: FilterOptions,

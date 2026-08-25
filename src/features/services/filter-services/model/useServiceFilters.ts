@@ -3,7 +3,7 @@ import { useCallback, useMemo, useState } from 'react';
 import type { ServiceProvider } from '../../../../entities/service';
 import { ALL_CATEGORIES, filterServiceProviders, type CategoryFilterValue } from '../lib';
 
-/** Owns the search + category filter state for the services list. */
+/** Holds the search text and category filter for the services list. */
 export function useServiceFilters(providers: ServiceProvider[] | undefined) {
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState<CategoryFilterValue>(ALL_CATEGORIES);

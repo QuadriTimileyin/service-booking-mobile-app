@@ -46,7 +46,7 @@ export function BookingForm({ provider, onBooked }: BookingFormProps) {
       return;
     }
 
-    // Best-effort feedback: a device without haptics must not fail a saved booking.
+    // Haptics are optional. A phone without them should not fail a saved booking.
     void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(
       () => {},
     );
@@ -62,7 +62,7 @@ export function BookingForm({ provider, onBooked }: BookingFormProps) {
 
   return (
     <View className="gap-5">
-      {/* Selected service is fixed: it is chosen on the previous screen. */}
+      {/* The service is picked on the previous screen, so it is read-only here. */}
       <Card className="border-primary/20 bg-primary-soft">
         <Text className="text-xs font-semibold uppercase tracking-wide text-primary-dark">
           Selected service

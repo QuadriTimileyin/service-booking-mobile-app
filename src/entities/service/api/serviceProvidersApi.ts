@@ -7,7 +7,7 @@ export const serviceQueryKeys = {
   all: ['service-providers'] as const,
 };
 
-/** Fetches the remote users and normalises them into service providers. */
+/** Fetches the users and turns them into service providers. */
 export async function fetchServiceProviders(
   signal?: AbortSignal,
 ): Promise<ServiceProvider[]> {

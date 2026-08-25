@@ -1,4 +1,4 @@
-/** "Leanne Graham" -> "LG"; falls back to a single character for one-word names. */
+/** "Leanne Graham" becomes "LG". One-word names use the first two letters. */
 export const getInitials = (name: string): string => {
   const parts = name.trim().split(/\s+/).filter(Boolean);
   if (parts.length === 0) return '?';

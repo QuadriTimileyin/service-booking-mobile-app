@@ -8,9 +8,9 @@ export const BOOKINGS_STORAGE_KEY = 'service-booking/bookings';
 
 interface BookingState {
   bookings: Booking[];
-  /** False until AsyncStorage has been read, so the UI never flashes "empty". */
+  /** False until storage has been read, so the UI never flashes "empty". */
   hasHydrated: boolean;
-  /** Set when the device rejected a read/write; surfaced as a banner. */
+  /** Set when the phone refused a read or write. Shown as a banner. */
   storageError: string | null;
   addBooking: (booking: Booking) => void;
   deleteBooking: (id: string) => void;
@@ -51,6 +51,6 @@ export const useBookingStore = create<BookingState>()(
   ),
 );
 
-/** Selectors keep components subscribed to the narrowest slice possible. */
+/** Selectors keep each screen subscribed to only what it needs. */
 export const selectBookings = (state: BookingState) => state.bookings;
 export const selectHasHydrated = (state: BookingState) => state.hasHydrated;

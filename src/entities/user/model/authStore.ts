@@ -8,16 +8,13 @@ export const AUTH_STORAGE_KEY = 'service-booking/auth';
 interface AuthState {
   isAuthenticated: boolean;
   email: string | null;
-  /** False until AsyncStorage has been read, so we don't flash the login screen. */
+  /** False until storage has been read, so we do not flash the login screen. */
   hasHydrated: boolean;
   signIn: (email: string) => void;
   signOut: () => void;
 }
 
-/**
- * Mock session state. There is no backend: a valid email plus a non-empty
- * password is treated as a successful sign-in (see README assumptions).
- */
+/** Mock session. Any valid email with a password signs in. There is no backend. */
 export const useAuthStore = create<AuthState>()(
   persist(
     (set): AuthState => ({

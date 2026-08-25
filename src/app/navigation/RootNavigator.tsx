@@ -28,7 +28,7 @@ export function RootNavigator() {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const hasHydrated = useAuthStore((state) => state.hasHydrated);
 
-  // Hold the previous frame until the persisted session has been read.
+  // Wait for the saved session before choosing a stack.
   if (!hasHydrated) {
     return (
       <View className="flex-1 items-center justify-center bg-surface-page">

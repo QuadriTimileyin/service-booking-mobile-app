@@ -7,11 +7,9 @@ type StorageErrorHandler = (
 ) => void;
 
 /**
- * AsyncStorage adapter for Zustand's `persist` middleware.
- *
- * Storage failures are surfaced through `onError` instead of rejecting, so a
- * device that cannot write to disk degrades to an in-memory session rather than
- * crashing the app with an unhandled rejection.
+ * AsyncStorage adapter for Zustand persist.
+ * Failures go to onError instead of throwing, so a phone that cannot write to
+ * disk still works for the session.
  */
 export const createAsyncStorage = (onError?: StorageErrorHandler): StateStorage => ({
   getItem: async (name) => {

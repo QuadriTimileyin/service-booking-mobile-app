@@ -46,7 +46,7 @@ function ServiceCardComponent({ provider, onPress }: ServiceCardProps) {
         <Text className="text-sm text-ink-muted">{provider.city}</Text>
       </View>
 
-      {/* The card is pressable, but the explicit CTA keeps the action obvious. */}
+      {/* The whole card is pressable, but the button keeps the action obvious. */}
       <Button
         label="View Details"
         variant="secondary"

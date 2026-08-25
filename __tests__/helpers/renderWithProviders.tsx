@@ -3,8 +3,8 @@ import { render } from '@testing-library/react-native';
 import type { ReactElement, ReactNode } from 'react';
 
 /**
- * Renders a component with the providers screens rely on, without retries.
- * `render` is asynchronous in React Native Testing Library 14.
+ * Renders with the providers the screens need. Retries are off so tests fail fast.
+ * render is async in React Native Testing Library 14.
  */
 export async function renderWithProviders(ui: ReactElement) {
   const queryClient = new QueryClient({
@@ -18,7 +18,7 @@ export async function renderWithProviders(ui: ReactElement) {
   return render(ui, { wrapper: Wrapper });
 }
 
-/** Minimal stand-in for the navigation prop a screen receives. */
+/** Small stand-in for the navigation prop a screen gets. */
 export const createNavigationMock = () =>
   ({
     navigate: jest.fn(),
