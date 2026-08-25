@@ -56,6 +56,13 @@ export function ServicesScreen({ navigation }: Props) {
 
       <ServicesSearch value={query} onChange={setQuery} />
 
+      <View className="pt-3">
+        <Text className="mb-2 px-4 text-base font-semibold text-ink">
+          Browse by category
+        </Text>
+        <CategoryFilter value={category} onChange={setCategory} />
+      </View>
+
       {isPending ? (
         <ServiceListSkeleton />
       ) : isError ? (
@@ -77,16 +84,9 @@ export function ServicesScreen({ navigation }: Props) {
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
           ListHeaderComponent={
-            <View className="gap-4 pb-1 pt-3">
+            <View className="gap-4 pb-1 pt-4">
               <View className="px-4">
                 <HomeHero />
-              </View>
-
-              <View>
-                <Text className="mb-2 px-4 text-base font-semibold text-ink">
-                  Browse by category
-                </Text>
-                <CategoryFilter value={category} onChange={setCategory} />
               </View>
 
               {results.length > 0 ? (
