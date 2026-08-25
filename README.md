@@ -11,6 +11,12 @@ assessment.
 
 
 
+https://github.com/user-attachments/assets/1e985ef8-e318-4f5a-a5c8-937737195a92
+
+
+
+
+
 ## Running it
 
 You need Node 20 or newer, npm, and either Xcode or Android Studio. Expo Go on a
