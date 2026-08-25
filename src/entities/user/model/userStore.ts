@@ -7,6 +7,13 @@ import type { UserProfile } from '../types';
 
 export const USER_STORAGE_KEY = 'service-booking/user';
 
+/**
+ * Keys this slice used to write. The session moved here from a plain auth store
+ * when the profile was added, and the old key is left behind on any device that
+ * ran the earlier build.
+ */
+export const LEGACY_USER_STORAGE_KEYS = ['service-booking/auth'] as const;
+
 interface UserState {
   isAuthenticated: boolean;
   profile: UserProfile | null;

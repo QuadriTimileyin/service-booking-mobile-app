@@ -3,7 +3,6 @@ import type { ServiceCategory } from '../../service';
 export interface Booking {
   id: string;
   serviceProviderId: number;
-  /** Human-readable service name, e.g. "Plumbing with Deckow-Crist". */
   serviceName: string;
   providerName: string;
   companyName: string;

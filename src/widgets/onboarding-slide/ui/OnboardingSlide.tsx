@@ -13,7 +13,6 @@ interface OnboardingSlideProps {
   slide: OnboardingSlideContent;
 }
 
-
 export function OnboardingSlide({ slide }: OnboardingSlideProps) {
   const { width } = useWindowDimensions();
 

@@ -2,10 +2,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render } from '@testing-library/react-native';
 import type { ReactElement, ReactNode } from 'react';
 
-/**
- * Renders with the providers the screens need. Retries are off so tests fail fast.
- * render is async in React Native Testing Library 14.
- */
+// Renders with the providers the screens need. Retries are off so tests fail fast.
+
 export async function renderWithProviders(ui: ReactElement) {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false, gcTime: 0 } },
