@@ -4,11 +4,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { Alert, Text, View } from 'react-native';
 
 import type { ServiceProvider } from '../../../../entities/service';
-import {
-  formatDateLabel,
-  formatTimeLabel,
-  startOfToday,
-} from '../../../../shared/lib/dates';
+import { startOfToday } from '../../../../shared/lib/dates';
 import { Badge, Button, Card, DateTimeField, Input } from '../../../../shared/ui';
 import {
   NOTES_MAX_LENGTH,
@@ -19,7 +15,7 @@ import {
 
 interface BookingFormProps {
   provider: ServiceProvider;
-  onBooked: () => void;
+  onBooked: (bookingId: string) => void;
 }
 
 export function BookingForm({ provider, onBooked }: BookingFormProps) {
@@ -36,8 +32,10 @@ export function BookingForm({ provider, onBooked }: BookingFormProps) {
   });
 
   const onSubmit = (values: BookingFormValues) => {
+    let bookingId: string;
+
     try {
-      createBooking(provider, values);
+      bookingId = createBooking(provider, values).id;
     } catch {
       Alert.alert(
         'Booking failed',
@@ -51,13 +49,7 @@ export function BookingForm({ provider, onBooked }: BookingFormProps) {
       () => {},
     );
 
-    Alert.alert(
-      'Booking confirmed',
-      `${provider.category} with ${provider.companyName} on ${formatDateLabel(
-        values.date,
-      )} at ${formatTimeLabel(values.time)}.`,
-      [{ text: 'View my bookings', onPress: onBooked }],
-    );
+    onBooked(bookingId);
   };
 
   return (
@@ -114,7 +106,7 @@ export function BookingForm({ provider, onBooked }: BookingFormProps) {
         name="notes"
         render={({ field: { onChange, onBlur, value } }) => (
           <Input
-            label="Notes (optional)"
+            label="Additional notes (optional)"
             placeholder="Anything the provider should know?"
             value={value}
             onChangeText={onChange}
@@ -132,7 +124,7 @@ export function BookingForm({ provider, onBooked }: BookingFormProps) {
       />
 
       <Button
-        label="Confirm booking"
+        label="Confirm Booking"
         onPress={handleSubmit(onSubmit)}
         loading={isSubmitting}
         testID="booking-submit"

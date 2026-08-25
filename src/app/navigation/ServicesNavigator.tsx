@@ -1,24 +1,17 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import { BookingSuccessScreen } from '../../pages/booking-success';
 import { BookingScreen } from '../../pages/create-booking';
 import { ServiceDetailsScreen } from '../../pages/service-details';
 import { ServicesScreen } from '../../pages/services';
-import { colors } from '../../shared/config/theme';
+import { screenOptions } from './screenOptions';
 import type { ServicesStackParamList } from './types';
 
 const Stack = createNativeStackNavigator<ServicesStackParamList>();
 
 export function ServicesNavigator() {
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerTitleStyle: { color: colors.ink, fontSize: 17, fontWeight: '600' },
-        headerTintColor: colors.primary,
-        headerStyle: { backgroundColor: colors.surface },
-        headerShadowVisible: false,
-        contentStyle: { backgroundColor: colors.page },
-      }}
-    >
+    <Stack.Navigator screenOptions={screenOptions}>
       <Stack.Screen
         name="Services"
         component={ServicesScreen}
@@ -33,6 +26,11 @@ export function ServicesNavigator() {
         name="Booking"
         component={BookingScreen}
         options={{ title: 'Book service' }}
+      />
+      <Stack.Screen
+        name="BookingSuccess"
+        component={BookingSuccessScreen}
+        options={{ headerShown: false, gestureEnabled: false }}
       />
     </Stack.Navigator>
   );

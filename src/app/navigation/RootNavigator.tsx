@@ -1,8 +1,10 @@
 import { NavigationContainer, type Theme } from '@react-navigation/native';
 import { ActivityIndicator, View } from 'react-native';
 
-import { useAuthStore } from '../../entities/user';
+import { usePreferencesStore } from '../../entities/preferences';
+import { useUserStore } from '../../entities/user';
 import { colors } from '../../shared/config/theme';
+import { OnboardingScreen } from '../../pages/onboarding';
 import { AuthNavigator } from './AuthNavigator';
 import { MainNavigator } from './MainNavigator';
 
@@ -24,12 +26,18 @@ const navigationTheme: Theme = {
   },
 };
 
+/**
+ * Onboarding first, then login, then the app.
+ * Nothing renders until both stores have read from storage, so the wrong screen
+ * never flashes on launch.
+ */
 export function RootNavigator() {
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const hasHydrated = useAuthStore((state) => state.hasHydrated);
+  const isAuthenticated = useUserStore((state) => state.isAuthenticated);
+  const userReady = useUserStore((state) => state.hasHydrated);
+  const onboardingComplete = usePreferencesStore((state) => state.onboardingComplete);
+  const preferencesReady = usePreferencesStore((state) => state.hasHydrated);
 
-  // Wait for the saved session before choosing a stack.
-  if (!hasHydrated) {
+  if (!userReady || !preferencesReady) {
     return (
       <View className="flex-1 items-center justify-center bg-surface-page">
         <ActivityIndicator size="large" color={colors.primary} />
@@ -39,7 +47,13 @@ export function RootNavigator() {
 
   return (
     <NavigationContainer theme={navigationTheme}>
-      {isAuthenticated ? <MainNavigator /> : <AuthNavigator />}
+      {!onboardingComplete ? (
+        <OnboardingScreen />
+      ) : isAuthenticated ? (
+        <MainNavigator />
+      ) : (
+        <AuthNavigator />
+      )}
     </NavigationContainer>
   );
 }

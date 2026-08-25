@@ -1,17 +1,15 @@
-import { Ionicons } from '@expo/vector-icons';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useCallback } from 'react';
-import { FlatList, RefreshControl, View } from 'react-native';
+import { FlatList, RefreshControl, Text, View } from 'react-native';
 
 import { useServiceProviders, type ServiceProvider } from '../../../entities/service';
-import { useAuthStore } from '../../../entities/user';
+import { selectProfile, useUserStore } from '../../../entities/user';
 import { useServiceFilters } from '../../../features/services/filter-services';
 import { colors } from '../../../shared/config/theme';
 import type { ServicesStackParamList } from '../../../shared/types';
 import {
   EmptyState,
   ErrorState,
-  IconButton,
   Screen,
   ServiceListSkeleton,
 } from '../../../shared/ui';
@@ -28,8 +26,8 @@ export function ServicesScreen({ navigation }: Props) {
   const { query, setQuery, category, setCategory, results, isFiltering, clearFilters } =
     useServiceFilters(data);
 
-  const email = useAuthStore((state) => state.email);
-  const signOut = useAuthStore((state) => state.signOut);
+  const profile = useUserStore(selectProfile);
+  const firstName = profile?.name.split(' ')[0];
 
   const openDetails = useCallback(
     (provider: ServiceProvider) =>
@@ -47,13 +45,8 @@ export function ServicesScreen({ navigation }: Props) {
   return (
     <Screen>
       <ScreenHeader
-        title="Find a service"
-        subtitle={email ? `Signed in as ${email}` : undefined}
-        action={
-          <IconButton accessibilityLabel="Sign out" onPress={signOut}>
-            <Ionicons name="log-out-outline" size={22} color={colors.inkMuted} />
-          </IconButton>
-        }
+        title={firstName ? `Hello, ${firstName} 👋` : 'Find a service'}
+        subtitle="What service do you need today?"
       />
 
       <ServicesSearch value={query} onChange={setQuery} />
@@ -73,6 +66,14 @@ export function ServicesScreen({ navigation }: Props) {
           keyExtractor={(provider) => String(provider.id)}
           renderItem={renderItem}
           contentContainerClassName="gap-3 px-4 pb-8 pt-1"
+          ListHeaderComponent={
+            results.length > 0 ? (
+              <View className="flex-row items-baseline justify-between pb-1 pt-1">
+                <Text className="text-lg font-semibold text-ink">Service providers</Text>
+                <Text className="text-sm text-ink-muted">{results.length} available</Text>
+              </View>
+            ) : null
+          }
           contentContainerStyle={results.length === 0 ? { flexGrow: 1 } : undefined}
           keyboardDismissMode="on-drag"
           keyboardShouldPersistTaps="handled"

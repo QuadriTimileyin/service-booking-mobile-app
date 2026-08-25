@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { BookingsScreen } from '../../pages/bookings';
 import { colors } from '../../shared/config/theme';
+import { ProfileNavigator } from './ProfileNavigator';
 import { ServicesNavigator } from './ServicesNavigator';
 import type { MainTabParamList } from './types';
 
@@ -24,8 +25,8 @@ export function MainNavigator() {
         component={ServicesNavigator}
         options={{
           title: 'Services',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="grid-outline" size={size} color={color} />
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons name={focused ? 'grid' : 'grid-outline'} size={size} color={color} />
           ),
         }}
       />
@@ -34,8 +35,26 @@ export function MainNavigator() {
         component={BookingsScreen}
         options={{
           title: 'My Bookings',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="calendar-outline" size={size} color={color} />
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons
+              name={focused ? 'calendar' : 'calendar-outline'}
+              size={size}
+              color={color}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="ProfileTab"
+        component={ProfileNavigator}
+        options={{
+          title: 'Profile',
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons
+              name={focused ? 'person' : 'person-outline'}
+              size={size}
+              color={color}
+            />
           ),
         }}
       />

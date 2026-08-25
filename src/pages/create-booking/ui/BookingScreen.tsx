@@ -18,11 +18,9 @@ export function BookingScreen({ route, navigation }: Props) {
     refetch,
   } = useServiceProvider(serviceId);
 
-  const goToMyBookings = () => {
-    // Send the stack back to the list so the tab does not reopen a finished form.
-    navigation.popToTop();
-    navigation.getParent()?.navigate('BookingsTab');
-  };
+  // Replace, so the back gesture never returns to a form already submitted.
+  const goToSuccess = (bookingId: string) =>
+    navigation.replace('BookingSuccess', { bookingId });
 
   if (isPending) {
     return (
@@ -72,7 +70,7 @@ export function BookingScreen({ route, navigation }: Props) {
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
-          <BookingForm provider={provider} onBooked={goToMyBookings} />
+          <BookingForm provider={provider} onBooked={goToSuccess} />
         </ScrollView>
       </KeyboardAvoidingView>
     </Screen>

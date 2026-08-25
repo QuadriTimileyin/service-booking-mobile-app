@@ -2,7 +2,7 @@ import { userEvent, waitFor } from '@testing-library/react-native';
 
 import type { JsonPlaceholderUser } from '../src/entities/service';
 import { ServicesScreen } from '../src/pages/services';
-import { useAuthStore } from '../src/entities/user';
+import { useUserStore } from '../src/entities/user';
 import { createNavigationMock, renderWithProviders } from './helpers/renderWithProviders';
 
 const user = (
@@ -39,7 +39,10 @@ const renderScreen = () =>
 
 describe('ServicesScreen', () => {
   beforeEach(() => {
-    useAuthStore.setState({ isAuthenticated: true, email: 'timmy@example.com' });
+    useUserStore.setState({
+      isAuthenticated: true,
+      profile: { name: 'Timmy Quadri', email: 'timmy@example.com' },
+    });
   });
 
   it('shows the loading skeleton before data arrives', async () => {

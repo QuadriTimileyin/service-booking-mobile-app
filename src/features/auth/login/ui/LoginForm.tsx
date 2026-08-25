@@ -3,12 +3,12 @@ import { useRef } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { TextInput, View } from 'react-native';
 
-import { useAuthStore } from '../../../../entities/user';
+import { useUserStore } from '../../../../entities/user';
 import { Button, Input } from '../../../../shared/ui';
 import { loginSchema, type LoginFormValues } from '../model';
 
 export function LoginForm() {
-  const signIn = useAuthStore((state) => state.signIn);
+  const signIn = useUserStore((state) => state.signIn);
   const passwordRef = useRef<TextInput>(null);
 
   const {

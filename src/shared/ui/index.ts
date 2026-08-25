@@ -7,5 +7,6 @@ export { EmptyState } from './EmptyState';
 export { ErrorState } from './ErrorState';
 export { IconButton } from './IconButton';
 export { Input, type InputProps } from './Input';
+export { ListRow } from './ListRow';
 export { Skeleton, ServiceCardSkeleton, ServiceListSkeleton } from './LoadingSkeleton';
 export { Screen } from './Screen';

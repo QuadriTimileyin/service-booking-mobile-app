@@ -2,5 +2,7 @@
 export type {
   AuthStackParamList,
   MainTabParamList,
+  OnboardingStackParamList,
+  ProfileStackParamList,
   ServicesStackParamList,
 } from '../../shared/types';

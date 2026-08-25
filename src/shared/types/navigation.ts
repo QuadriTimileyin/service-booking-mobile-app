@@ -9,15 +9,26 @@ export type ServicesStackParamList = {
   Services: undefined;
   ServiceDetails: { serviceId: number };
   Booking: { serviceId: number };
+  BookingSuccess: { bookingId: string };
+};
+
+export type ProfileStackParamList = {
+  Profile: undefined;
+  EditProfile: undefined;
 };
 
 export type MainTabParamList = {
   ServicesTab: NavigatorScreenParams<ServicesStackParamList>;
   BookingsTab: undefined;
+  ProfileTab: NavigatorScreenParams<ProfileStackParamList>;
 };
 
 export type AuthStackParamList = {
   Login: undefined;
+};
+
+export type OnboardingStackParamList = {
+  Onboarding: undefined;
 };
 
 declare global {
