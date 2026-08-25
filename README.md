@@ -92,10 +92,11 @@ one card treatment, one button component with four variants, and a 4/8px spacing
 scale.
 
 **Every colour and radius lives in one file, `src/shared/config/tokens.js`.**
-`tailwind.config.js` reads it for the utility classes, and
-`src/shared/config/theme.ts` re-exports it for the few APIs that cannot take a
-class name (the navigation theme, vector icons, the refresh spinner). Rebranding
-the app means editing that single file. No component hardcodes a colour.
+`tailwind.config.js` reads it for the utility classes, `shared/config/theme.ts`
+re-exports it for the few APIs that cannot take a class name (the navigation
+theme, vector icons, the refresh spinner), and `app.config.js` reads it for the
+splash and adaptive-icon backgrounds. Rebranding the app means editing that
+single file. No component hardcodes a colour.
 
 ## Architecture
 

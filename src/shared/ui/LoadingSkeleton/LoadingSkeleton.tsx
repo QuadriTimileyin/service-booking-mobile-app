@@ -13,7 +13,6 @@ interface SkeletonProps {
   className?: string;
 }
 
-/** One pulsing block. Stack a few to match the real layout. */
 export function Skeleton({ className = '' }: SkeletonProps) {
   const opacity = useSharedValue(0.5);
 

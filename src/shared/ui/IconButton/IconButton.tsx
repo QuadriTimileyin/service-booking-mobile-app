@@ -1,7 +1,6 @@
 import { Pressable } from 'react-native';
 
 interface IconButtonProps {
-  /** Required. Without it a screen reader cannot announce an icon-only button. */
   accessibilityLabel: string;
   onPress: () => void;
   children: React.ReactNode;

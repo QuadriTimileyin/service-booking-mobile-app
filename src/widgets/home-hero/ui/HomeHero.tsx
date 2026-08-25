@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 
 import { colors } from '../../../shared/config/theme';
 
-/** Sets the tone on the home screen. No prices or ratings, we do not have any. */
+/** Sets the tone on the home screen. No prices or ratings */
 export function HomeHero() {
   return (
     <View className="flex-row items-center gap-4 overflow-hidden rounded-card bg-primary p-5">

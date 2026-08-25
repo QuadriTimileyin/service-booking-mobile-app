@@ -13,7 +13,7 @@ interface OnboardingSlideProps {
   slide: OnboardingSlideContent;
 }
 
-/** One onboarding page. Sized to the screen so paging lands cleanly. */
+
 export function OnboardingSlide({ slide }: OnboardingSlideProps) {
   const { width } = useWindowDimensions();
 

@@ -24,11 +24,8 @@ const ICONS: Record<CategoryFilterValue, keyof typeof Ionicons.glyphMap> = {
 
 const OPTIONS: CategoryFilterValue[] = [ALL_CATEGORIES, ...SERVICE_CATEGORIES];
 
-/**
- * Icon tiles, so the categories read at a glance instead of as a row of words.
- * Keep press styling on the Pressable. An active: class on a plain View makes
- * NativeWind look for press state it cannot find, and the render throws.
- */
+// Icon tiles, so the categories read at a glance instead of as a row of words.
+
 export function CategoryFilter({ value, onChange }: CategoryFilterProps) {
   return (
     <ScrollView

@@ -64,10 +64,12 @@ describe('BookingsScreen', () => {
       list.props.refreshControl.props.onRefresh();
     });
 
+    // The list stays mounted so the pull spinner keeps running.
     expect(screen.getByLabelText('Loading bookings')).toBeTruthy();
-    expect(screen.queryByTestId('bookings-list')).toBeNull();
+    expect(screen.getByTestId('bookings-list')).toBeTruthy();
+    expect(screen.queryByText('Romaguera-Crona')).toBeNull();
 
-    await waitFor(() => expect(screen.queryByTestId('bookings-list')).toBeTruthy(), {
+    await waitFor(() => expect(screen.queryByLabelText('Loading bookings')).toBeNull(), {
       timeout: 3000,
     });
     expect(screen.getByText('Romaguera-Crona')).toBeTruthy();

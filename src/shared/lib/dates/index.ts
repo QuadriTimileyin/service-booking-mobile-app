@@ -43,7 +43,7 @@ export const isPastDate = (value: string): boolean => {
   return date.getTime() < startOfToday().getTime();
 };
 
-/** "Mon, 3 Feb 2025" — readable without depending on a date library. */
+/** "Mon, 3 Feb 2025", readable without depending on a date library. */
 export const formatDateLabel = (value: string): string => {
   const date = fromDateValue(value);
   if (!date) return value;
@@ -55,7 +55,6 @@ export const formatDateLabel = (value: string): string => {
   });
 };
 
-/** "2:30 PM" in the device locale, falling back to the raw value. */
 export const formatTimeLabel = (value: string): string => {
   const date = fromTimeValue(value);
   if (!date) return value;

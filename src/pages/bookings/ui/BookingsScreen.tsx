@@ -35,7 +35,7 @@ function BookingsSkeleton() {
       accessible
       accessibilityRole="progressbar"
       accessibilityLabel="Loading bookings"
-      className="gap-3 px-4 pt-2"
+      className="gap-3 pt-2"
     >
       <ServiceCardSkeleton />
       <ServiceCardSkeleton />
@@ -107,15 +107,18 @@ export function BookingsScreen({ navigation }: Props) {
       ) : null}
 
       {/* Wait for storage first, else a saved booking flashes as "no bookings". */}
-      {!hasHydrated || refreshing ? (
+      {!hasHydrated ? (
         <BookingsSkeleton />
       ) : (
         <FlatList
-          data={bookings}
+          // The list stays mounted while refreshing so the pull spinner survives.
+          data={refreshing ? [] : bookings}
           keyExtractor={(booking) => booking.id}
           renderItem={renderItem}
           contentContainerClassName="gap-3 px-4 pb-8 pt-1"
-          contentContainerStyle={bookings.length === 0 ? { flexGrow: 1 } : undefined}
+          contentContainerStyle={
+            !refreshing && bookings.length === 0 ? { flexGrow: 1 } : undefined
+          }
           showsVerticalScrollIndicator={false}
           refreshControl={
             <RefreshControl
@@ -126,13 +129,17 @@ export function BookingsScreen({ navigation }: Props) {
             />
           }
           ListEmptyComponent={
-            <EmptyState
-              icon="calendar-outline"
-              title="No bookings yet"
-              description="Find a service and schedule your first appointment."
-              actionLabel="Browse Services"
-              onAction={browseServices}
-            />
+            refreshing ? (
+              <BookingsSkeleton />
+            ) : (
+              <EmptyState
+                icon="calendar-outline"
+                title="No bookings yet"
+                description="Find a service and schedule your first appointment."
+                actionLabel="Browse Services"
+                onAction={browseServices}
+              />
+            )
           }
           testID="bookings-list"
         />

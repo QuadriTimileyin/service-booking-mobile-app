@@ -12,7 +12,6 @@ interface ListRowProps {
   destructive?: boolean;
 }
 
-/** A settings style row. Static when there is no onPress. */
 export function ListRow({ icon, label, value, onPress, destructive }: ListRowProps) {
   const tint = destructive ? colors.danger : colors.inkMuted;
 
@@ -33,7 +32,7 @@ export function ListRow({ icon, label, value, onPress, destructive }: ListRowPro
       </Text>
 
       {value ? <Text className="text-sm text-ink-muted">{value}</Text> : null}
-      {/* A chevron means "this goes somewhere", so the logout row does not get one. */}
+      {/* A chevron icon means "this goes somewhere", so the logout row does not need one. */}
       {onPress && !value && !destructive ? (
         <Ionicons name="chevron-forward" size={18} color={colors.inkMuted} />
       ) : null}

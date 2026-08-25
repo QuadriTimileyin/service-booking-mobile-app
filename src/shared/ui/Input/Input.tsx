@@ -9,7 +9,6 @@ export interface InputProps extends TextInputProps {
   error?: string;
   hint?: string;
   containerClassName?: string;
-  /** Extra classes for the field. Merged, so focus and error styling still work. */
   inputClassName?: string;
 }
 
