@@ -1,4 +1,1 @@
-export {
-  OnboardingSlide,
-  type OnboardingSlideContent,
-} from './ui/OnboardingSlide';
+export { OnboardingSlide, type OnboardingSlideContent } from './ui/OnboardingSlide';

@@ -7,12 +7,7 @@ import { selectProfile, useUserStore } from '../../../entities/user';
 import { useServiceFilters } from '../../../features/services/filter-services';
 import { colors } from '../../../shared/config/theme';
 import type { ServicesStackParamList } from '../../../shared/types';
-import {
-  EmptyState,
-  ErrorState,
-  Screen,
-  ServiceListSkeleton,
-} from '../../../shared/ui';
+import { EmptyState, ErrorState, Screen, ServiceListSkeleton } from '../../../shared/ui';
 import { CategoryFilter } from '../../../widgets/category-filter';
 import { ScreenHeader } from '../../../widgets/screen-header';
 import { ServiceCard } from '../../../widgets/service-card';
@@ -56,7 +51,8 @@ export function ServicesScreen({ navigation }: Props) {
         <ServiceListSkeleton />
       ) : isError ? (
         <ErrorState
-          message={error?.message ?? 'We could not load services right now.'}
+          title="We couldn't load services"
+          message={error?.message ?? 'Check your connection and try again.'}
           onRetry={() => void refetch()}
           retrying={isRefetching}
         />

@@ -1,5 +1,6 @@
+import { Ionicons } from '@expo/vector-icons';
 import { forwardRef, useId, useState } from 'react';
-import { Text, TextInput, View, type TextInputProps } from 'react-native';
+import { Pressable, Text, TextInput, View, type TextInputProps } from 'react-native';
 
 import { colors } from '../../config/theme';
 
@@ -19,6 +20,7 @@ export const Input = forwardRef<TextInput, InputProps>(function Input(
     hint,
     containerClassName = '',
     inputClassName = '',
+    secureTextEntry,
     onFocus,
     onBlur,
     ...rest
@@ -26,6 +28,7 @@ export const Input = forwardRef<TextInput, InputProps>(function Input(
   ref,
 ) {
   const [focused, setFocused] = useState(false);
+  const [revealed, setRevealed] = useState(false);
   const errorId = useId();
 
   const borderClass = error
@@ -39,23 +42,46 @@ export const Input = forwardRef<TextInput, InputProps>(function Input(
       <Text nativeID={`${errorId}-label`} className="mb-2 text-sm font-medium text-ink">
         {label}
       </Text>
-      <TextInput
-        ref={ref}
-        accessibilityLabel={label}
-        accessibilityLabelledBy={`${errorId}-label`}
-        accessibilityHint={hint}
-        placeholderTextColor={colors.inkMuted}
-        onFocus={(event) => {
-          setFocused(true);
-          onFocus?.(event);
-        }}
-        onBlur={(event) => {
-          setFocused(false);
-          onBlur?.(event);
-        }}
-        className={`min-h-[52px] rounded-control border bg-surface px-4 py-3 text-base text-ink ${borderClass} ${inputClassName}`}
-        {...rest}
-      />
+
+      <View className="justify-center">
+        <TextInput
+          ref={ref}
+          accessibilityLabel={label}
+          accessibilityLabelledBy={`${errorId}-label`}
+          accessibilityHint={hint}
+          placeholderTextColor={colors.inkMuted}
+          secureTextEntry={secureTextEntry && !revealed}
+          onFocus={(event) => {
+            setFocused(true);
+            onFocus?.(event);
+          }}
+          onBlur={(event) => {
+            setFocused(false);
+            onBlur?.(event);
+          }}
+          className={`min-h-[52px] rounded-control border bg-surface px-4 py-3 text-base text-ink ${borderClass} ${
+            secureTextEntry ? 'pr-14' : ''
+          } ${inputClassName}`}
+          {...rest}
+        />
+
+        {secureTextEntry ? (
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={revealed ? 'Hide password' : 'Show password'}
+            hitSlop={8}
+            onPress={() => setRevealed((current) => !current)}
+            className="absolute right-1 h-11 w-11 items-center justify-center"
+          >
+            <Ionicons
+              name={revealed ? 'eye-off-outline' : 'eye-outline'}
+              size={20}
+              color={colors.inkMuted}
+            />
+          </Pressable>
+        ) : null}
+      </View>
+
       {error ? (
         <Text accessibilityLiveRegion="polite" className="mt-1.5 text-sm text-danger">
           {error}

@@ -1,4 +1,4 @@
-import { userEvent, waitFor } from '@testing-library/react-native';
+import { act, userEvent, waitFor } from '@testing-library/react-native';
 import { Alert } from 'react-native';
 
 import { deriveNameFromEmail, useUserStore } from '../src/entities/user';
@@ -27,7 +27,10 @@ describe('ProfileScreen', () => {
 
   it('shows the signed in user', async () => {
     const screen = await renderWithProviders(
-      <ProfileScreen navigation={createNavigationMock()} route={createNavigationMock()} />,
+      <ProfileScreen
+        navigation={createNavigationMock()}
+        route={createNavigationMock()}
+      />,
     );
 
     expect(screen.getByText('Timmy Quadri')).toBeTruthy();
@@ -40,7 +43,10 @@ describe('ProfileScreen', () => {
     const alertSpy = jest.spyOn(Alert, 'alert').mockImplementation(() => {});
     const user = userEvent.setup();
     const screen = await renderWithProviders(
-      <ProfileScreen navigation={createNavigationMock()} route={createNavigationMock()} />,
+      <ProfileScreen
+        navigation={createNavigationMock()}
+        route={createNavigationMock()}
+      />,
     );
 
     await user.press(screen.getByText('Log out'));
@@ -49,7 +55,9 @@ describe('ProfileScreen', () => {
     expect(useUserStore.getState().isAuthenticated).toBe(true);
 
     const actions = alertSpy.mock.calls[0][2] as { text: string; onPress?: () => void }[];
-    actions.find((action) => action.text === 'Log out')?.onPress?.();
+    await act(async () => {
+      actions.find((action) => action.text === 'Log out')?.onPress?.();
+    });
 
     expect(useUserStore.getState().isAuthenticated).toBe(false);
     expect(useUserStore.getState().profile).toBeNull();

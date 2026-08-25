@@ -26,7 +26,11 @@ export function MainNavigator() {
         options={{
           title: 'Services',
           tabBarIcon: ({ color, size, focused }) => (
-            <Ionicons name={focused ? 'grid' : 'grid-outline'} size={size} color={color} />
+            <Ionicons
+              name={focused ? 'grid' : 'grid-outline'}
+              size={size}
+              color={color}
+            />
           ),
         }}
       />

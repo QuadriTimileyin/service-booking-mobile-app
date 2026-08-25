@@ -26,7 +26,7 @@ export function ErrorState({
       <Text className="mt-2 text-center text-sm leading-5 text-ink-muted">{message}</Text>
       {onRetry ? (
         <View className="mt-6 w-full max-w-xs">
-          <Button label="Try again" onPress={onRetry} loading={retrying} />
+          <Button label="Try Again" onPress={onRetry} loading={retrying} />
         </View>
       ) : null}
     </View>

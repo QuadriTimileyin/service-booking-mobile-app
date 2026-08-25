@@ -92,7 +92,7 @@ export function BookingsScreen({ navigation }: Props) {
             <EmptyState
               icon="calendar-outline"
               title="No bookings yet"
-              description="Browse services and schedule your first appointment."
+              description="Find a service and schedule your first appointment."
               actionLabel="Browse Services"
               onAction={browseServices}
             />

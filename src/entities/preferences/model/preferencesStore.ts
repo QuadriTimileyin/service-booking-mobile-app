@@ -24,8 +24,7 @@ export const usePreferencesStore = create<PreferencesState>()(
       name: PREFERENCES_STORAGE_KEY,
       storage: createJSONStorage(() => createAsyncStorage()),
       partialize: (state) => ({ onboardingComplete: state.onboardingComplete }),
-      onRehydrateStorage: () => () =>
-        usePreferencesStore.setState({ hasHydrated: true }),
+      onRehydrateStorage: () => () => usePreferencesStore.setState({ hasHydrated: true }),
     },
   ),
 );

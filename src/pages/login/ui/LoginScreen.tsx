@@ -28,7 +28,7 @@ export function LoginScreen() {
               Welcome back
             </Text>
             <Text className="mt-2 text-base leading-6 text-ink-muted">
-              Sign in to book trusted local services in minutes.
+              Sign in to continue booking trusted services.
             </Text>
           </View>
 

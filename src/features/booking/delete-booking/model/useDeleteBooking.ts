@@ -11,8 +11,8 @@ export function useDeleteBooking() {
   return useCallback(
     (booking: Booking) => {
       Alert.alert(
-        'Delete booking?',
-        `${booking.serviceName} will be removed from your bookings.`,
+        'Delete this booking?',
+        `${booking.serviceName} will be removed from your device.`,
         [
           { text: 'Cancel', style: 'cancel' },
           {

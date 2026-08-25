@@ -101,7 +101,7 @@ describe('ServicesScreen', () => {
     mockFetchOnce(null, false);
     const screen = await renderScreen();
 
-    expect(await screen.findByText('Something went wrong')).toBeTruthy();
-    expect(screen.getByText('Try again')).toBeTruthy();
+    expect(await screen.findByText("We couldn't load services")).toBeTruthy();
+    expect(screen.getByText('Try Again')).toBeTruthy();
   });
 });

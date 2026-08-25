@@ -1,4 +1,4 @@
-import { userEvent } from '@testing-library/react-native';
+import { act, userEvent } from '@testing-library/react-native';
 import { Alert } from 'react-native';
 
 import { createBooking, useBookingStore } from '../src/entities/booking';
@@ -31,7 +31,7 @@ describe('BookingsScreen', () => {
 
     expect(screen.getByText('No bookings yet')).toBeTruthy();
     expect(
-      screen.getByText('Browse services and schedule your first appointment.'),
+      screen.getByText('Find a service and schedule your first appointment.'),
     ).toBeTruthy();
     expect(screen.getByText('Browse Services')).toBeTruthy();
   });
@@ -63,7 +63,7 @@ describe('BookingsScreen', () => {
     await user.press(screen.getByLabelText(`Delete booking for ${booking.serviceName}`));
 
     expect(alertSpy).toHaveBeenCalledWith(
-      'Delete booking?',
+      'Delete this booking?',
       expect.stringContaining(booking.serviceName),
       expect.any(Array),
     );
@@ -71,7 +71,9 @@ describe('BookingsScreen', () => {
 
     // Confirming the dialog should remove the booking.
     const actions = alertSpy.mock.calls[0][2] as { text: string; onPress?: () => void }[];
-    actions.find((action) => action.text === 'Delete')?.onPress?.();
+    await act(async () => {
+      actions.find((action) => action.text === 'Delete')?.onPress?.();
+    });
     expect(useBookingStore.getState().bookings).toHaveLength(0);
 
     alertSpy.mockRestore();

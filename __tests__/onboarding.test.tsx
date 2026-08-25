@@ -12,9 +12,7 @@ describe('onboarding', () => {
   it('starts on the first slide', async () => {
     const screen = await renderWithProviders(<OnboardingScreen />);
 
-    expect(
-      screen.getByText('Trusted services, right when you need them'),
-    ).toBeTruthy();
+    expect(screen.getByText('Trusted services, right when you need them')).toBeTruthy();
     expect(screen.getByText('Skip')).toBeTruthy();
     expect(screen.getByTestId('onboarding-next')).toBeTruthy();
   });
