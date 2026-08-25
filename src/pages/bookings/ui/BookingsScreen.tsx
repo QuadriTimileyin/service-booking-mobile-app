@@ -13,7 +13,13 @@ import {
 import { useDeleteBooking } from '../../../features/booking/delete-booking';
 import { colors } from '../../../shared/config/theme';
 import type { MainTabParamList } from '../../../shared/types';
-import { Animated, EmptyState, Screen, ServiceCardSkeleton } from '../../../shared/ui';
+import {
+  Animated,
+  EmptyState,
+  IconButton,
+  Screen,
+  ServiceCardSkeleton,
+} from '../../../shared/ui';
 import { BookingCard } from '../../../widgets/booking-card';
 import { ScreenHeader } from '../../../widgets/screen-header';
 
@@ -23,6 +29,7 @@ export function BookingsScreen({ navigation }: Props) {
   const bookings = useBookingStore(selectBookings);
   const hasHydrated = useBookingStore(selectHasHydrated);
   const storageError = useBookingStore((state) => state.storageError);
+  const clearStorageError = useBookingStore((state) => state.clearStorageError);
   const confirmDelete = useDeleteBooking();
 
   const browseServices = useCallback(
@@ -55,9 +62,15 @@ export function BookingsScreen({ navigation }: Props) {
       />
 
       {storageError ? (
-        <View className="mx-4 mb-2 flex-row items-start gap-2 rounded-control border border-danger/30 bg-danger/5 p-3">
+        <View className="mx-4 mb-2 flex-row items-center gap-2 rounded-control border border-danger/30 bg-danger/5 py-2 pl-3">
           <Ionicons name="warning-outline" size={18} color={colors.danger} />
           <Text className="flex-1 text-sm text-danger">{storageError}</Text>
+          <IconButton
+            accessibilityLabel="Dismiss storage warning"
+            onPress={clearStorageError}
+          >
+            <Ionicons name="close" size={18} color={colors.danger} />
+          </IconButton>
         </View>
       ) : null}
 
