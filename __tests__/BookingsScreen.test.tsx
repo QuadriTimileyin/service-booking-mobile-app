@@ -1,4 +1,4 @@
-import { act, userEvent } from '@testing-library/react-native';
+import { act, userEvent, waitFor } from '@testing-library/react-native';
 import { Alert } from 'react-native';
 
 import { createBooking, useBookingStore } from '../src/entities/booking';
@@ -52,6 +52,25 @@ describe('BookingsScreen', () => {
     const screen = await renderScreen();
 
     expect(screen.queryByText('No bookings yet')).toBeNull();
+  });
+
+  it('shows the skeleton while refreshing, then the list again', async () => {
+    useBookingStore.setState({ bookings: [booking], hasHydrated: true });
+    const screen = await renderScreen();
+
+    const list = screen.getByTestId('bookings-list');
+
+    await act(async () => {
+      list.props.refreshControl.props.onRefresh();
+    });
+
+    expect(screen.getByLabelText('Loading bookings')).toBeTruthy();
+    expect(screen.queryByTestId('bookings-list')).toBeNull();
+
+    await waitFor(() => expect(screen.queryByTestId('bookings-list')).toBeTruthy(), {
+      timeout: 3000,
+    });
+    expect(screen.getByText('Romaguera-Crona')).toBeTruthy();
   });
 
   it('asks for confirmation before deleting a booking', async () => {

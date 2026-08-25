@@ -51,6 +51,11 @@ export const useBookingStore = create<BookingState>()(
   ),
 );
 
+/** Re-reads the saved bookings from storage. Used by pull to refresh. */
+export async function reloadBookings(): Promise<void> {
+  await useBookingStore.persist.rehydrate();
+}
+
 /** Selectors keep each screen subscribed to only what it needs. */
 export const selectBookings = (state: BookingState) => state.bookings;
 export const selectHasHydrated = (state: BookingState) => state.hasHydrated;

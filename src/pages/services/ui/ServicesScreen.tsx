@@ -1,5 +1,5 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { FlatList, RefreshControl, Text, View } from 'react-native';
 
 import { useServiceProviders, type ServiceProvider } from '../../../entities/service';
@@ -9,6 +9,7 @@ import { colors } from '../../../shared/config/theme';
 import type { ServicesStackParamList } from '../../../shared/types';
 import { EmptyState, ErrorState, Screen, ServiceListSkeleton } from '../../../shared/ui';
 import { CategoryFilter } from '../../../widgets/category-filter';
+import { HomeHero } from '../../../widgets/home-hero';
 import { ScreenHeader } from '../../../widgets/screen-header';
 import { ServiceCard } from '../../../widgets/service-card';
 import { ServicesSearch } from '../../../widgets/services-search';
@@ -24,6 +25,13 @@ export function ServicesScreen({ navigation }: Props) {
   const profile = useUserStore(selectProfile);
   const firstName = profile?.name.split(' ')[0];
 
+  const listRef = useRef<FlatList<ServiceProvider>>(null);
+
+  // A shorter list keeps the old scroll offset, which leaves a blank gap on top.
+  useEffect(() => {
+    listRef.current?.scrollToOffset({ offset: 0, animated: false });
+  }, [query, category]);
+
   const openDetails = useCallback(
     (provider: ServiceProvider) =>
       navigation.navigate('ServiceDetails', { serviceId: provider.id }),
@@ -32,7 +40,9 @@ export function ServicesScreen({ navigation }: Props) {
 
   const renderItem = useCallback(
     ({ item }: { item: ServiceProvider }) => (
-      <ServiceCard provider={item} onPress={openDetails} />
+      <View className="px-4">
+        <ServiceCard provider={item} onPress={openDetails} />
+      </View>
     ),
     [openDetails],
   );
@@ -45,7 +55,6 @@ export function ServicesScreen({ navigation }: Props) {
       />
 
       <ServicesSearch value={query} onChange={setQuery} />
-      <CategoryFilter value={category} onChange={setCategory} />
 
       {isPending ? (
         <ServiceListSkeleton />
@@ -58,22 +67,40 @@ export function ServicesScreen({ navigation }: Props) {
         />
       ) : (
         <FlatList
+          ref={listRef}
           data={results}
           keyExtractor={(provider) => String(provider.id)}
           renderItem={renderItem}
-          contentContainerClassName="gap-3 px-4 pb-8 pt-1"
-          ListHeaderComponent={
-            results.length > 0 ? (
-              <View className="flex-row items-baseline justify-between pb-1 pt-1">
-                <Text className="text-lg font-semibold text-ink">Service providers</Text>
-                <Text className="text-sm text-ink-muted">{results.length} available</Text>
-              </View>
-            ) : null
-          }
+          contentContainerClassName="gap-3 pb-8"
           contentContainerStyle={results.length === 0 ? { flexGrow: 1 } : undefined}
           keyboardDismissMode="on-drag"
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
+          ListHeaderComponent={
+            <View className="gap-4 pb-1 pt-3">
+              <View className="px-4">
+                <HomeHero />
+              </View>
+
+              <View>
+                <Text className="mb-2 px-4 text-base font-semibold text-ink">
+                  Browse by category
+                </Text>
+                <CategoryFilter value={category} onChange={setCategory} />
+              </View>
+
+              {results.length > 0 ? (
+                <View className="flex-row items-baseline justify-between px-4">
+                  <Text className="text-base font-semibold text-ink">
+                    Service providers
+                  </Text>
+                  <Text className="text-sm text-ink-muted">
+                    {results.length} available
+                  </Text>
+                </View>
+              ) : null}
+            </View>
+          }
           refreshControl={
             <RefreshControl
               refreshing={isRefetching}
@@ -89,7 +116,7 @@ export function ServicesScreen({ navigation }: Props) {
                 title="No services found"
                 description={
                   isFiltering
-                    ? 'Try a different search term or category.'
+                    ? 'Try another search or clear your category filter.'
                     : 'There are no service providers available right now.'
                 }
                 actionLabel={isFiltering ? 'Clear filters' : undefined}

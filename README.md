@@ -31,7 +31,8 @@ Beyond the required assessment scope, the app completes the product lifecycle:
 - First-launch onboarding, remembered on the device
 - A Profile tab with the signed-in user, edit profile and logout
 - A booking confirmation screen after a successful save
-- Search, category filters and pull-to-refresh
+- A home screen with a compact hero and icon based category tiles
+- Search, category filters and pull-to-refresh on both lists
 - Loading skeletons, empty and error states
 - Responsive layout and accessibility work
 
@@ -219,8 +220,8 @@ click through:
 - `LoginForm` — validation messages, malformed email, successful sign-in.
 - `ServicesScreen` — skeleton loading, rendered provider cards, search
   filtering, the "no services found" empty state and the retryable error state.
-- `BookingsScreen` — empty state, a persisted booking, the rehydration guard and
-  delete-with-confirmation.
+- `BookingsScreen` — empty state, a persisted booking, the rehydration guard,
+  pull-to-refresh showing skeletons, and delete-with-confirmation.
 - `OnboardingScreen` — first slide, skip persists completion, next does not.
 - `ProfileScreen` and `EditProfileForm` — user details, logout confirmation,
   saving a valid change, rejecting an invalid email or empty name.

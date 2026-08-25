@@ -1,10 +1,11 @@
 import { Ionicons } from '@expo/vector-icons';
 import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
-import { useCallback } from 'react';
-import { FlatList, Text, View } from 'react-native';
+import { useCallback, useState } from 'react';
+import { FlatList, RefreshControl, Text, View } from 'react-native';
 import { FadeInDown, FadeOut, LinearTransition } from 'react-native-reanimated';
 
 import {
+  reloadBookings,
   selectBookings,
   selectHasHydrated,
   useBookingStore,
@@ -25,12 +26,43 @@ import { ScreenHeader } from '../../../widgets/screen-header';
 
 type Props = BottomTabScreenProps<MainTabParamList, 'BookingsTab'>;
 
+/** Long enough for the spinner to be seen, short enough not to feel slow. */
+const MIN_REFRESH_MS = 600;
+
+function BookingsSkeleton() {
+  return (
+    <View
+      accessible
+      accessibilityRole="progressbar"
+      accessibilityLabel="Loading bookings"
+      className="gap-3 px-4 pt-2"
+    >
+      <ServiceCardSkeleton />
+      <ServiceCardSkeleton />
+    </View>
+  );
+}
+
 export function BookingsScreen({ navigation }: Props) {
   const bookings = useBookingStore(selectBookings);
   const hasHydrated = useBookingStore(selectHasHydrated);
   const storageError = useBookingStore((state) => state.storageError);
   const clearStorageError = useBookingStore((state) => state.clearStorageError);
   const confirmDelete = useDeleteBooking();
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const refresh = useCallback(async () => {
+    setRefreshing(true);
+    try {
+      await Promise.all([
+        reloadBookings(),
+        new Promise((resolve) => setTimeout(resolve, MIN_REFRESH_MS)),
+      ]);
+    } finally {
+      setRefreshing(false);
+    }
+  }, []);
 
   const browseServices = useCallback(
     () => navigation.navigate('ServicesTab', { screen: 'Services' }),
@@ -75,11 +107,8 @@ export function BookingsScreen({ navigation }: Props) {
       ) : null}
 
       {/* Wait for storage first, else a saved booking flashes as "no bookings". */}
-      {!hasHydrated ? (
-        <View className="gap-3 px-4 pt-2">
-          <ServiceCardSkeleton />
-          <ServiceCardSkeleton />
-        </View>
+      {!hasHydrated || refreshing ? (
+        <BookingsSkeleton />
       ) : (
         <FlatList
           data={bookings}
@@ -88,6 +117,14 @@ export function BookingsScreen({ navigation }: Props) {
           contentContainerClassName="gap-3 px-4 pb-8 pt-1"
           contentContainerStyle={bookings.length === 0 ? { flexGrow: 1 } : undefined}
           showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={() => void refresh()}
+              tintColor={colors.primary}
+              colors={[colors.primary]}
+            />
+          }
           ListEmptyComponent={
             <EmptyState
               icon="calendar-outline"

@@ -1,24 +1,36 @@
-import { Pressable, ScrollView, Text } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { Pressable, ScrollView, Text, View } from 'react-native';
 
 import { SERVICE_CATEGORIES } from '../../../entities/service';
 import {
   ALL_CATEGORIES,
   type CategoryFilterValue,
 } from '../../../features/services/filter-services';
+import { colors } from '../../../shared/config/theme';
 
 interface CategoryFilterProps {
   value: CategoryFilterValue;
   onChange: (value: CategoryFilterValue) => void;
 }
 
+const ICONS: Record<CategoryFilterValue, keyof typeof Ionicons.glyphMap> = {
+  All: 'apps-outline',
+  'Car Wash': 'car-sport-outline',
+  Cleaning: 'sparkles-outline',
+  Plumbing: 'water-outline',
+  Laundry: 'shirt-outline',
+  Electrician: 'flash-outline',
+};
+
 const OPTIONS: CategoryFilterValue[] = [ALL_CATEGORIES, ...SERVICE_CATEGORIES];
 
+/** Icon tiles, so the categories read at a glance instead of as a row of words. */
 export function CategoryFilter({ value, onChange }: CategoryFilterProps) {
   return (
     <ScrollView
       horizontal
       showsHorizontalScrollIndicator={false}
-      contentContainerClassName="gap-2 px-4 py-3"
+      contentContainerClassName="gap-3 px-4 py-1"
     >
       {OPTIONS.map((option) => {
         const selected = option === value;
@@ -29,15 +41,28 @@ export function CategoryFilter({ value, onChange }: CategoryFilterProps) {
             accessibilityLabel={`Filter by ${option}`}
             accessibilityState={{ selected }}
             onPress={() => onChange(option)}
-            className={`h-11 justify-center rounded-full border px-4 ${
-              selected
-                ? 'border-primary bg-primary'
-                : 'border-line bg-surface active:bg-surface-muted'
-            }`}
+            className="w-[76px] items-center gap-2"
             testID={`category-${option}`}
           >
+            <View
+              className={`h-[62px] w-[62px] items-center justify-center rounded-[20px] border ${
+                selected
+                  ? 'border-primary bg-primary'
+                  : 'border-line bg-surface active:bg-surface-muted'
+              }`}
+            >
+              <Ionicons
+                name={ICONS[option]}
+                size={26}
+                color={selected ? colors.surface : colors.primary}
+              />
+            </View>
+
             <Text
-              className={`text-sm font-medium ${selected ? 'text-white' : 'text-ink-muted'}`}
+              numberOfLines={1}
+              className={`text-xs ${
+                selected ? 'font-semibold text-ink' : 'font-medium text-ink-muted'
+              }`}
             >
               {option}
             </Text>
