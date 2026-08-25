@@ -1,115 +1,71 @@
-# Service Booking Mobile App
+# Service Booking
 
-A production-quality React Native (Expo) app for discovering local service
-providers — cleaners, plumbers, electricians, laundry services and car washes —
-and booking appointments that persist on the device.
+A mobile app for finding local service providers (cleaners, plumbers,
+electricians, laundry, car wash) and booking an appointment with them. Bookings
+are saved on the device, so they survive closing the app.
 
-Built for the Sage Grey Technologies Mobile Developer practical assessment.
+Built with Expo and React Native for the Sage Grey Technologies mobile developer
+assessment.
 
-## Features
+## Demo
 
-| Requirement                                                                | Status |
-| -------------------------------------------------------------------------- | ------ |
-| Mock authentication with email + password validation                       | ✅     |
-| Service list fetched from JSONPlaceholder and rendered in a `FlatList`     | ✅     |
-| Loading and error states with retry                                        | ✅     |
-| Service details (provider, phone, address, company, category, description) | ✅     |
-| Booking screen with date, time and notes                                   | ✅     |
-| Bookings persisted locally with AsyncStorage                               | ✅     |
-| My Bookings list with delete + confirmation                                | ✅     |
-| NativeWind styling, responsive and consistent layout                       | ✅     |
-| **Bonus:** search services                                                 | ✅     |
-| **Bonus:** filter by category                                              | ✅     |
-| **Bonus:** pull to refresh                                                 | ✅     |
-| **Bonus:** Zod form validation                                             | ✅     |
-| **Bonus:** animations, empty states, skeleton loading UI                   | ✅     |
+<!-- Paste the video link GitHub gives you after uploading the recording. -->
 
-## Product Polish
+## Running it
 
-Beyond the required assessment scope, the app completes the product lifecycle:
-
-- First-launch onboarding, remembered on the device
-- A Profile tab with the signed-in user, edit profile and logout
-- A booking confirmation screen after a successful save
-- A home screen with a compact hero and icon based category tiles
-- Search, category filters and pull-to-refresh on both lists
-- Loading skeletons, empty and error states
-- Responsive layout and accessibility work
-
-These are lifecycle gaps rather than new business scope. Authentication with no
-account surface and no way to sign out is incomplete, and a state-changing action
-like booking deserves clear confirmation. Nothing here invents data the API does
-not provide: no prices, ratings, reviews or verification badges.
-
-## Tech Stack
-
-| Concern      | Choice                                            |
-| ------------ | ------------------------------------------------- |
-| Runtime      | Expo (SDK 57) + React Native 0.86                 |
-| Language     | TypeScript (strict)                               |
-| Styling      | NativeWind (Tailwind CSS)                         |
-| Navigation   | React Navigation (native stack + bottom tabs)     |
-| Client state | Zustand (+ `persist` middleware)                  |
-| Server state | TanStack Query                                    |
-| Persistence  | AsyncStorage                                      |
-| Forms        | React Hook Form + Zod                             |
-| Icons        | `@expo/vector-icons` (Ionicons)                   |
-| Date/time    | `@react-native-community/datetimepicker`          |
-| Testing      | Jest (`jest-expo`) + React Native Testing Library |
-
-## Getting Started
-
-**Requirements:** Node.js 20+, npm, and either Xcode (iOS Simulator) or Android
-Studio (emulator). Expo Go on a physical device also works.
+You need Node 20 or newer, npm, and either Xcode or Android Studio. Expo Go on a
+real phone works too.
 
 ```bash
 npm install
-npm start        # start the Metro dev server
-npm run ios      # open in the iOS Simulator
-npm run android  # open in the Android emulator
+npm start        # then press i or a, or scan the QR code
+npm run ios
+npm run android
 ```
 
-Sign in with any valid email address and any non-empty password, for example
-`timmy@example.com` / `password123`.
+Sign in with any valid email and any password, for example
+`timmy@example.com` / `password123`. There is no backend, so the login only
+checks that the form is filled in properly.
 
-### Quality gates
+Checks:
 
 ```bash
-npm run typecheck   # tsc --noEmit
-npm run lint        # eslint
-npm test            # jest
-npx expo-doctor     # expo project health
+npm run typecheck
+npm run lint
+npm test
+npx expo-doctor
 ```
 
-## Design and theming
+## What it does
 
-The visual direction was drafted in [Stitch](https://stitch.withgoogle.com) and
-then rebuilt properly in React Native with NativeWind. The generated screens were
-a reference for hierarchy, spacing and component treatment, not code to paste in.
+First launch shows a short onboarding, then the login screen. After signing in
+you land on a list of providers pulled from JSONPlaceholder, with a search box
+and category tiles at the top. Search covers provider name, company, category
+and city, and works together with the selected category. Pull down to refetch.
 
-The design system is small on purpose: one green primary, a neutral grey ramp,
-one card treatment, one button component with four variants, and a 4/8px spacing
-scale.
+Tapping a provider opens their details (phone, email, address, company, service
+description) and a Book Service button. Booking is a day strip, a grid of time
+slots, and an optional note. Confirming saves the booking and shows a
+confirmation screen.
 
-**Every colour and radius lives in one file, `src/shared/config/tokens.js`.**
-`tailwind.config.js` reads it for the utility classes, `shared/config/theme.ts`
-re-exports it for the few APIs that cannot take a class name (the navigation
-theme, vector icons, the refresh spinner), and `app.config.js` reads it for the
-splash and adaptive-icon backgrounds. Rebranding the app means editing that
-single file. No component hardcodes a colour.
+My Bookings lists everything saved on the device. Pull to refresh re-reads
+storage, and deleting asks for confirmation first. Profile holds the signed in
+user, a small edit form for the name and email, and logout.
+
+The list has skeletons while loading, a retry screen if the request fails, and
+an empty state when a search returns nothing.
 
 ## Architecture
 
-The project uses **Feature-Sliced Design (FSD)**: the codebase is split into
-layers that may only depend downwards.
+The code follows Feature-Sliced Design. Layers only depend downwards:
 
 ```
-app       → providers, navigators, root shell
-pages     → one screen per route, orchestration only
-widgets   → composite UI blocks (service card, booking card, filters)
-features  → user-facing capabilities (login, filter services, create/delete booking)
-entities  → domain models, API access and stores (service provider, booking, user)
-shared    → design system, utilities, api client, config — no domain knowledge
+app       providers, navigators, the root shell
+pages     one screen per route, wiring only
+widgets   composite blocks: service card, booking card, filters, profile header
+features  what a user does: log in, filter, create a booking, delete one
+entities  the domain: service provider, booking, user, preferences
+shared    design system, api client, storage, date helpers
 ```
 
 ```
@@ -118,131 +74,99 @@ src/
 ├── pages/        onboarding, login, services, service-details, create-booking,
 │                 booking-success, bookings, profile, edit-profile
 ├── widgets/      service-card, booking-card, services-search, category-filter,
-│                 screen-header, profile-header, onboarding-slide
+│                 screen-header, profile-header, home-hero, onboarding-slide
 ├── features/     auth/login, auth/logout, services/filter-services,
 │                 booking/create-booking, booking/delete-booking,
 │                 profile/edit-profile
 ├── entities/     service, booking, user, preferences
-└── shared/       api, config, lib (dates, formatting, storage), types, ui
+└── shared/       api, config, lib, types, ui
 ```
 
-**Why FSD?** It keeps ownership obvious (a change to booking rules has exactly
-one home), prevents circular dependencies through the layer rule, keeps screens
-thin enough to read at a glance, and makes the business logic testable without
-rendering a single component.
+I picked FSD because it keeps ownership obvious. Booking rules live in one place
+instead of being spread across screens, the layer rule stops circular imports
+before they start, and the screens stay thin enough to read in one go. It also
+means most of the logic can be tested without rendering anything.
 
-Each slice exposes a small public API through its `index.ts`; other slices import
-from that barrel rather than reaching into internal files.
+Each slice exports through its own `index.ts`. Other slices import from that,
+not from files inside it.
 
-## State Management
+## State
 
-Client state and server state are deliberately kept apart:
+Server state and client state are kept apart.
 
-- **TanStack Query** owns the remote provider collection — caching, loading and
-  error flags, retries and pull-to-refresh. `useServiceProvider(id)` reads a
-  single provider out of that same cache, so navigation only carries an id.
-- **Zustand** owns application state: the mock session and profile
-  (`entities/user`), device settings such as the onboarding flag
-  (`entities/preferences`), and the booking collection (`entities/booking`).
-- **AsyncStorage** backs those stores through Zustand's `persist` middleware. Each
-  store exposes `hasHydrated`, so the UI shows a skeleton instead of briefly
-  flashing an incorrect empty state while storage is being read. Startup waits for
-  both the session and the preferences before deciding between onboarding, login
-  and the main app.
+TanStack Query owns the provider list: caching, loading and error flags, retry
+and pull to refresh. A details screen only receives an id and reads the provider
+back out of the same cache, so nothing large travels through navigation.
 
-## API
+Zustand owns the rest. `entities/user` holds the mock session and profile,
+`entities/preferences` holds the onboarding flag, `entities/booking` holds the
+bookings. All three persist through AsyncStorage and expose `hasHydrated`, so
+the app waits for storage before deciding between onboarding, login and the main
+app. Without that guard you get a flash of the wrong screen on launch.
 
-`GET https://jsonplaceholder.typicode.com/users` returns users, which the app
-maps into its own `ServiceProvider` entity in
-`entities/service/lib/mapUserToServiceProvider.ts`:
+## The data
 
-- `category` is derived from the provider id (`(id - 1) % 5`), so the same
-  provider always offers the same service — across renders and app restarts.
-- `address` is composed as `street, suite, city`.
-- `description` is generated from the category, company and city.
-- Missing or malformed fields degrade to readable placeholders instead of
-  rendering `undefined`.
+`GET https://jsonplaceholder.typicode.com/users` returns users, and the app maps
+each one to a service provider in
+`entities/service/lib/mapUserToServiceProvider.ts`.
 
-Network access goes through `shared/api/apiClient.ts`, which adds a request
-timeout and normalises failures into a single `ApiError` type. Screens never call
-`fetch` directly.
+The API has no service category, so the app derives one from the provider id
+(`(id - 1) % 5`). Deriving it rather than randomising means a provider keeps the
+same service between renders and app restarts. The address is joined as
+`street, suite, city`, and the description is written from the category, company
+and city. Missing fields fall back to readable text instead of `undefined`.
 
-## Authentication
+Names and cities are whatever the endpoint returns, so they read as foreign
+rather than Nigerian. I left them alone on purpose. The brief says to map these
+users as providers, so keeping the values untouched means anyone reviewing can
+open the endpoint and compare.
 
-Authentication is mocked, as permitted by the brief. The login form validates with
-Zod (email required and well formed, password required). A successful validation
-sets `isAuthenticated` and saves a profile built from the email address, so
-`john.doe@example.com` is greeted as John Doe until the name is edited.
+Network calls go through `shared/api/apiClient.ts`, which adds a timeout and
+turns every failure into one `ApiError`. Screens never call `fetch`.
 
-There is no backend, no registration and no password reset. Logging out lives on
-the Profile tab behind a confirmation. It clears the session but keeps saved
-bookings and the onboarding flag, because those belong to the device.
+## Theming
 
-## Assumptions
+Colours and radii live in `src/shared/config/tokens.js` and nowhere else.
+`tailwind.config.js` reads it for the utility classes, `shared/config/theme.ts`
+re-exports it for the few APIs that cannot take a class name (navigation theme,
+icons, refresh spinner), and `app.config.js` reads it for the splash and icon
+backgrounds. Changing the brand colour is a one file edit. No component
+hardcodes a colour.
 
-- Any valid email address plus any non-empty password is accepted as a sign-in.
-- JSONPlaceholder users represent service providers; service categories are
-  generated by the app because the API has no such field.
-- Categories are assigned deterministically rather than randomly, so the data is
-  stable across sessions.
-- Bookings are stored on the device only — there is no booking API to sync with.
-- Dates and times are captured and displayed in the device's local timezone, and
-  persisted as plain `YYYY-MM-DD` / `HH:mm` strings rather than `Date` objects.
-- A booking may be made for today or any future date; past dates are rejected.
-- The mock session is persisted, so a signed-in user stays signed in after a
-  restart until they log out.
-- Onboarding is shown once per install and is remembered separately from the
-  session, so it does not reappear after logging out.
-- The display name is derived from the email on first sign-in and can then be
-  edited on the Profile tab.
-
-## Testing
+## Tests
 
 ```bash
 npm test
 ```
 
-Focused unit tests cover the logic that carries risk:
+Unit tests cover the parts that carry risk: the user to provider mapper, the
+login and booking schemas, the booking store, the search and category filter,
+and the display name helper. Screen tests use React Native Testing Library and
+go through login validation, the services list in its loading, error, filtered
+and empty states, the bookings list with refresh and delete, onboarding, profile
+editing and the booking confirmation.
 
-- `mapUserToServiceProvider` — field mapping, deterministic categories, address
-  construction, description generation and malformed-data fallbacks.
-- `loginSchema` — missing email, invalid email format, missing password, valid
-  credentials.
-- `bookingSchema` — valid booking, today allowed, past date rejected, missing
-  date/time, notes length limit.
-- `bookingStore` — add, delete, unknown-id delete, unique ids and timestamps.
-- `filterServiceProviders` — case-insensitive search across name/company/
-  category/city, category filtering, combined filters and the empty result.
-- `deriveNameFromEmail` — display names built from an address, with a fallback.
+## Assumptions
 
-Screen tests (React Native Testing Library) cover the flows a reviewer would
-click through:
+- Any valid email with a non-empty password signs in. There is no backend.
+- JSONPlaceholder users stand in for service providers, and categories are
+  generated because the API has none.
+- Bookings are stored on the device only. There is no booking API to sync with.
+- Dates and times use the device timezone and are saved as `YYYY-MM-DD` and
+  `HH:mm` strings rather than `Date` objects.
+- A booking can be made for today or any day after it. Past dates are rejected.
+- Onboarding is shown once per install. Logging out does not bring it back, and
+  does not delete saved bookings, since both belong to the device.
+- The display name comes from the email on first sign in and can be edited
+  afterwards on the Profile tab.
 
-- `LoginForm` — validation messages, malformed email, successful sign-in.
-- `ServicesScreen` — skeleton loading, rendered provider cards, search
-  filtering, the "no services found" empty state and the retryable error state.
-- `BookingsScreen` — empty state, a persisted booking, the rehydration guard,
-  pull-to-refresh showing skeletons, and delete-with-confirmation.
-- `OnboardingScreen` — first slide, skip persists completion, next does not.
-- `ProfileScreen` and `EditProfileForm` — user details, logout confirmation,
-  saving a valid change, rejecting an invalid email or empty name.
-- `BookingSuccessScreen` — confirmation details and navigation back to services.
+## Known limitations
 
-## Known Limitations
+Authentication is mocked, so there is no token handling or refresh. Bookings do
+not sync anywhere, and reinstalling the app clears them. Provider availability
+is not modelled, so two bookings can land on the same slot.
 
-- Authentication is mocked; there is no real identity provider or token refresh.
-- Bookings live only on the device. Reinstalling the app clears them, and they do
-  not sync between devices.
-- Provider availability is not modelled, so any date/time in the future can be
-  booked and double-booking is possible.
-- Service categories are generated client-side because the API does not provide
-  them, so they are not "real" business data.
+## If this were going further
 
-## Future Improvements
-
-- Real authentication with a backend and secure token storage.
-- A booking API with server-side persistence and conflict handling.
-- Provider availability and time-slot selection.
-- Push notifications and calendar sync for upcoming appointments.
-- Payment integration.
-- Provider ratings and reviews.
+Real authentication, a booking API with proper conflict handling, provider
+availability and real time slots, reminders before an appointment, and payment.
