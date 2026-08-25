@@ -91,9 +91,9 @@ export function ServiceDetailsScreen({ route, navigation }: Props) {
         contentContainerClassName="gap-4 px-4 pb-6 pt-4"
         showsVerticalScrollIndicator={false}
       >
-        <Card className="border-primary/20 bg-primary-soft">
+        <Card>
           <View className="flex-row items-center gap-4">
-            <View className="h-16 w-16 items-center justify-center rounded-full bg-surface">
+            <View className="h-16 w-16 items-center justify-center rounded-full bg-primary-soft">
               <Text className="text-xl font-bold text-primary-dark">
                 {getInitials(provider.name)}
               </Text>

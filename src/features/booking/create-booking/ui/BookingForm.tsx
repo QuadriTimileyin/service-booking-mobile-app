@@ -55,7 +55,7 @@ export function BookingForm({ provider, onBooked }: BookingFormProps) {
   return (
     <View className="gap-5">
       {/* The service is picked on the previous screen, so it is read-only here. */}
-      <Card className="border-primary/20 bg-primary-soft">
+      <Card tone="soft">
         <Text className="text-xs font-semibold uppercase tracking-wide text-primary-dark">
           Selected service
         </Text>
