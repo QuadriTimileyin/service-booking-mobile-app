@@ -1,11 +1,26 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as Haptics from 'expo-haptics';
+import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Alert, Text, View } from 'react-native';
 
 import type { ServiceProvider } from '../../../../entities/service';
-import { startOfToday } from '../../../../shared/lib/dates';
-import { Badge, Button, Card, DateTimeField, Input } from '../../../../shared/ui';
+import {
+  fromDateValue,
+  fromTimeValue,
+  startOfToday,
+  toDateValue,
+  toTimeValue,
+} from '../../../../shared/lib/dates';
+import {
+  Badge,
+  Button,
+  Card,
+  DateStrip,
+  Input,
+  NativePickerSheet,
+  TimeSlots,
+} from '../../../../shared/ui';
 import {
   NOTES_MAX_LENGTH,
   bookingSchema,
@@ -18,18 +33,42 @@ interface BookingFormProps {
   onBooked: (bookingId: string) => void;
 }
 
+function FieldLabel({ children, error }: { children: string; error?: string }) {
+  return (
+    <View className="mb-2 flex-row items-baseline justify-between">
+      <Text className="text-sm font-medium text-ink">{children}</Text>
+      {error ? (
+        <Text accessibilityLiveRegion="polite" className="text-sm text-danger">
+          {error}
+        </Text>
+      ) : null}
+    </View>
+  );
+}
+
 export function BookingForm({ provider, onBooked }: BookingFormProps) {
   const createBooking = useCreateBooking();
+  const [picker, setPicker] = useState<{ mode: 'date' | 'time'; value: Date } | null>(
+    null,
+  );
 
   const {
     control,
     handleSubmit,
+    setValue,
+    getValues,
     formState: { errors, isSubmitting },
   } = useForm<BookingFormValues>({
     resolver: zodResolver(bookingSchema),
     defaultValues: { date: '', time: '', notes: '' },
     mode: 'onSubmit',
   });
+
+  const openDatePicker = () =>
+    setPicker({ mode: 'date', value: fromDateValue(getValues('date')) ?? new Date() });
+
+  const openTimePicker = () =>
+    setPicker({ mode: 'time', value: fromTimeValue(getValues('time')) ?? new Date() });
 
   const onSubmit = (values: BookingFormValues) => {
     let bookingId: string;
@@ -53,9 +92,9 @@ export function BookingForm({ provider, onBooked }: BookingFormProps) {
   };
 
   return (
-    <View className="gap-5">
+    <View className="gap-6">
       {/* The service is picked on the previous screen, so it is read-only here. */}
-      <Card tone="soft">
+      <Card tone="soft" className="mx-4">
         <Text className="text-xs font-semibold uppercase tracking-wide text-primary-dark">
           Selected service
         </Text>
@@ -66,68 +105,82 @@ export function BookingForm({ provider, onBooked }: BookingFormProps) {
           {provider.name} · {provider.city}
         </Text>
         <View className="mt-3">
-          <Badge label={provider.category} />
+          <Badge label={provider.category} tone="surface" />
         </View>
       </Card>
 
-      <Controller
-        control={control}
-        name="date"
-        render={({ field: { onChange, value } }) => (
-          <DateTimeField
-            label="Date"
-            mode="date"
-            value={value}
-            onChange={onChange}
-            placeholder="Select a date"
-            minimumDate={startOfToday()}
-            error={errors.date?.message}
-          />
-        )}
-      />
+      <View>
+        <View className="px-4">
+          <FieldLabel error={errors.date?.message}>Choose a date</FieldLabel>
+        </View>
+        <Controller
+          control={control}
+          name="date"
+          render={({ field: { onChange, value } }) => (
+            <DateStrip value={value} onChange={onChange} onPickAnother={openDatePicker} />
+          )}
+        />
+      </View>
 
-      <Controller
-        control={control}
-        name="time"
-        render={({ field: { onChange, value } }) => (
-          <DateTimeField
-            label="Time"
-            mode="time"
-            value={value}
-            onChange={onChange}
-            placeholder="Select a time"
-            error={errors.time?.message}
-          />
-        )}
-      />
+      <View className="px-4">
+        <FieldLabel error={errors.time?.message}>Choose a time</FieldLabel>
+        <Controller
+          control={control}
+          name="time"
+          render={({ field: { onChange, value } }) => (
+            <TimeSlots value={value} onChange={onChange} onPickAnother={openTimePicker} />
+          )}
+        />
+      </View>
 
-      <Controller
-        control={control}
-        name="notes"
-        render={({ field: { onChange, onBlur, value } }) => (
-          <Input
-            label="Additional notes (optional)"
-            placeholder="Anything the provider should know?"
-            value={value}
-            onChangeText={onChange}
-            onBlur={onBlur}
-            error={errors.notes?.message}
-            hint={`${value.length}/${NOTES_MAX_LENGTH}`}
-            multiline
-            numberOfLines={4}
-            maxLength={NOTES_MAX_LENGTH}
-            inputClassName="min-h-[104px]"
-            style={{ textAlignVertical: 'top' }}
-            testID="booking-notes"
-          />
-        )}
-      />
+      <View className="px-4">
+        <Controller
+          control={control}
+          name="notes"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <Input
+              label="Additional notes (optional)"
+              placeholder="Anything the provider should know?"
+              value={value}
+              onChangeText={onChange}
+              onBlur={onBlur}
+              error={errors.notes?.message}
+              hint={`${value.length}/${NOTES_MAX_LENGTH}`}
+              multiline
+              numberOfLines={4}
+              maxLength={NOTES_MAX_LENGTH}
+              inputClassName="min-h-[104px]"
+              style={{ textAlignVertical: 'top' }}
+              testID="booking-notes"
+            />
+          )}
+        />
+      </View>
 
-      <Button
-        label="Confirm Booking"
-        onPress={handleSubmit(onSubmit)}
-        loading={isSubmitting}
-        testID="booking-submit"
+      <View className="px-4">
+        <Button
+          label="Confirm Booking"
+          onPress={handleSubmit(onSubmit)}
+          loading={isSubmitting}
+          testID="booking-submit"
+        />
+      </View>
+
+      <NativePickerSheet
+        open={picker !== null}
+        mode={picker?.mode ?? 'date'}
+        title={picker?.mode === 'time' ? 'Choose a time' : 'Choose a date'}
+        value={picker?.value ?? new Date()}
+        minimumDate={picker?.mode === 'date' ? startOfToday() : undefined}
+        onConfirm={(picked) => {
+          if (picker?.mode === 'time') {
+            setValue('time', toTimeValue(picked));
+          } else {
+            setValue('date', toDateValue(picked));
+          }
+          setPicker(null);
+        }}
+        onDismiss={() => setPicker(null)}
       />
     </View>
   );

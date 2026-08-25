@@ -66,7 +66,7 @@ export function BookingScreen({ route, navigation }: Props) {
         className="flex-1"
       >
         <ScrollView
-          contentContainerClassName="px-4 pb-10 pt-4"
+          contentContainerClassName="pb-10 pt-4"
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
