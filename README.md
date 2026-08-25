@@ -9,7 +9,7 @@ assessment.
 
 ## Demo
 
-<!-- Paste the video link GitHub gives you after uploading the recording. -->
+
 
 ## Running it
 
@@ -117,9 +117,9 @@ same service between renders and app restarts. The address is joined as
 and city. Missing fields fall back to readable text instead of `undefined`.
 
 Names and cities are whatever the endpoint returns, so they read as foreign
-rather than Nigerian. I left them alone on purpose. The brief says to map these
-users as providers, so keeping the values untouched means anyone reviewing can
-open the endpoint and compare.
+rather than Nigerian. I left them untouched on purpose: the brief asks to map
+these users as providers, and keeping the raw values means a reviewer can open
+the endpoint and compare directly.
 
 Network calls go through `shared/api/apiClient.ts`, which adds a timeout and
 turns every failure into one `ApiError`. Screens never call `fetch`.
@@ -130,8 +130,8 @@ Colours and radii live in `src/shared/config/tokens.js` and nowhere else.
 `tailwind.config.js` reads it for the utility classes, `shared/config/theme.ts`
 re-exports it for the few APIs that cannot take a class name (navigation theme,
 icons, refresh spinner), and `app.config.js` reads it for the splash and icon
-backgrounds. Changing the brand colour is a one file edit. No component
-hardcodes a colour.
+backgrounds. No component hardcodes a colour, so changing the brand is a one
+file edit.
 
 ## Tests
 
