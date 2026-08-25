@@ -1,5 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { getFocusedRouteNameFromRoute, type RouteProp } from '@react-navigation/native';
 
 import { BookingsScreen } from '../../pages/bookings';
 import { colors } from '../../shared/config/theme';
@@ -8,6 +9,16 @@ import { ServicesNavigator } from './ServicesNavigator';
 import type { MainTabParamList } from './types';
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
+
+/** Screens that take over the whole page, so the tab bar steps out of the way. */
+const FULL_SCREEN_ROUTES = ['ServiceDetails', 'Booking', 'BookingSuccess', 'EditProfile'];
+
+const hideTabBarOnNestedScreens = ({ route }: { route: RouteProp<MainTabParamList> }) => {
+  const focused = getFocusedRouteNameFromRoute(route);
+  return focused && FULL_SCREEN_ROUTES.includes(focused)
+    ? ({ tabBarStyle: { display: 'none' } } as const)
+    : undefined;
+};
 
 export function MainNavigator() {
   return (
@@ -23,7 +34,8 @@ export function MainNavigator() {
       <Tab.Screen
         name="ServicesTab"
         component={ServicesNavigator}
-        options={{
+        options={({ route }) => ({
+          ...hideTabBarOnNestedScreens({ route }),
           title: 'Services',
           tabBarIcon: ({ color, size, focused }) => (
             <Ionicons
@@ -32,7 +44,7 @@ export function MainNavigator() {
               color={color}
             />
           ),
-        }}
+        })}
       />
       <Tab.Screen
         name="BookingsTab"
@@ -51,7 +63,8 @@ export function MainNavigator() {
       <Tab.Screen
         name="ProfileTab"
         component={ProfileNavigator}
-        options={{
+        options={({ route }) => ({
+          ...hideTabBarOnNestedScreens({ route }),
           title: 'Profile',
           tabBarIcon: ({ color, size, focused }) => (
             <Ionicons
@@ -60,7 +73,7 @@ export function MainNavigator() {
               color={color}
             />
           ),
-        }}
+        })}
       />
     </Tab.Navigator>
   );

@@ -33,7 +33,8 @@ export function ListRow({ icon, label, value, onPress, destructive }: ListRowPro
       </Text>
 
       {value ? <Text className="text-sm text-ink-muted">{value}</Text> : null}
-      {onPress && !value ? (
+      {/* A chevron means "this goes somewhere", so the logout row does not get one. */}
+      {onPress && !value && !destructive ? (
         <Ionicons name="chevron-forward" size={18} color={colors.inkMuted} />
       ) : null}
     </View>

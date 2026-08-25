@@ -59,7 +59,7 @@ export function BookingScreen({ route, navigation }: Props) {
   }
 
   return (
-    <Screen edges={[]}>
+    <Screen edges={['bottom']}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 96 : 0}

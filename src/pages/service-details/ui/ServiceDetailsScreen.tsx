@@ -86,14 +86,14 @@ export function ServiceDetailsScreen({ route, navigation }: Props) {
   }
 
   return (
-    <Screen edges={[]}>
+    <Screen edges={['bottom']}>
       <ScrollView
         contentContainerClassName="gap-4 px-4 pb-6 pt-4"
         showsVerticalScrollIndicator={false}
       >
-        <Card>
+        <Card className="border-primary/20 bg-primary-soft">
           <View className="flex-row items-center gap-4">
-            <View className="h-16 w-16 items-center justify-center rounded-full bg-primary-soft">
+            <View className="h-16 w-16 items-center justify-center rounded-full bg-surface">
               <Text className="text-xl font-bold text-primary-dark">
                 {getInitials(provider.name)}
               </Text>
@@ -132,7 +132,7 @@ export function ServiceDetailsScreen({ route, navigation }: Props) {
         </Card>
       </ScrollView>
 
-      <View className="border-t border-line bg-surface px-4 pb-6 pt-3">
+      <View className="border-t border-line bg-surface px-4 pb-3 pt-3">
         <Button
           label="Book Service"
           onPress={() => navigation.navigate('Booking', { serviceId: provider.id })}
