@@ -20,7 +20,9 @@ export function useDeleteBooking() {
             style: 'destructive',
             onPress: () => {
               deleteBooking(booking.id);
-              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(
+                () => {},
+              );
             },
           },
         ],

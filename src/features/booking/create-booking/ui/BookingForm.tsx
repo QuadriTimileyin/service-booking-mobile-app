@@ -35,23 +35,29 @@ export function BookingForm({ provider, onBooked }: BookingFormProps) {
     mode: 'onSubmit',
   });
 
-  const onSubmit = async (values: BookingFormValues) => {
+  const onSubmit = (values: BookingFormValues) => {
     try {
       createBooking(provider, values);
-      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      Alert.alert(
-        'Booking confirmed',
-        `${provider.category} with ${provider.companyName} on ${formatDateLabel(
-          values.date,
-        )} at ${formatTimeLabel(values.time)}.`,
-        [{ text: 'View my bookings', onPress: onBooked }],
-      );
     } catch {
       Alert.alert(
         'Booking failed',
         'We could not save this booking on your device. Please try again.',
       );
+      return;
     }
+
+    // Best-effort feedback: a device without haptics must not fail a saved booking.
+    void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(
+      () => {},
+    );
+
+    Alert.alert(
+      'Booking confirmed',
+      `${provider.category} with ${provider.companyName} on ${formatDateLabel(
+        values.date,
+      )} at ${formatTimeLabel(values.time)}.`,
+      [{ text: 'View my bookings', onPress: onBooked }],
+    );
   };
 
   return (
@@ -118,7 +124,7 @@ export function BookingForm({ provider, onBooked }: BookingFormProps) {
             multiline
             numberOfLines={4}
             maxLength={NOTES_MAX_LENGTH}
-            className="min-h-[104px] rounded-control border border-line bg-surface px-4 py-3 text-base text-ink"
+            inputClassName="min-h-[104px]"
             style={{ textAlignVertical: 'top' }}
             testID="booking-notes"
           />

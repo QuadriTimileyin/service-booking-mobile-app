@@ -17,7 +17,7 @@ export class ApiError extends Error {
 export async function apiGet<T>(path: string, signal?: AbortSignal): Promise<T> {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
-  signal?.addEventListener('abort', () => controller.abort());
+  signal?.addEventListener('abort', () => controller.abort(), { once: true });
 
   try {
     const response = await fetch(`${API_BASE_URL}${path}`, {
@@ -27,7 +27,7 @@ export async function apiGet<T>(path: string, signal?: AbortSignal): Promise<T> 
 
     if (!response.ok) {
       throw new ApiError(
-        `Request failed with status ${response.status}`,
+        `The server could not complete the request (error ${response.status}).`,
         response.status,
       );
     }
@@ -35,6 +35,9 @@ export async function apiGet<T>(path: string, signal?: AbortSignal): Promise<T> 
     return (await response.json()) as T;
   } catch (error) {
     if (error instanceof ApiError) throw error;
+    // A caller-initiated abort (screen unmounted, query cancelled) is not a
+    // failure to report — let React Query discard it as a cancellation.
+    if (signal?.aborted) throw error;
     if (error instanceof Error && error.name === 'AbortError') {
       throw new ApiError('The request timed out. Please check your connection.');
     }

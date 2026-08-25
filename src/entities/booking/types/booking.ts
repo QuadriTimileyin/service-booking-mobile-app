@@ -1,4 +1,4 @@
-import type { ServiceCategory } from '../../service/types';
+import type { ServiceCategory } from '../../service';
 
 export interface Booking {
   id: string;

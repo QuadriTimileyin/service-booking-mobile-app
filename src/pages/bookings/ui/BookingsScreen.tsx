@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { useCallback } from 'react';
 import { FlatList, Text, View } from 'react-native';
-import Animated, { FadeInDown, FadeOut, LinearTransition } from 'react-native-reanimated';
+import { FadeInDown, FadeOut, LinearTransition } from 'react-native-reanimated';
 
 import {
   selectBookings,
@@ -13,7 +13,7 @@ import {
 import { useDeleteBooking } from '../../../features/booking/delete-booking';
 import { colors } from '../../../shared/config/theme';
 import type { MainTabParamList } from '../../../shared/types';
-import { EmptyState, Screen, ServiceCardSkeleton } from '../../../shared/ui';
+import { Animated, EmptyState, Screen, ServiceCardSkeleton } from '../../../shared/ui';
 import { BookingCard } from '../../../widgets/booking-card';
 import { ScreenHeader } from '../../../widgets/screen-header';
 

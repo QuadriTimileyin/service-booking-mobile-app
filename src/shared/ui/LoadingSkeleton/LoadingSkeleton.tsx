@@ -1,11 +1,13 @@
 import { useEffect } from 'react';
 import { View } from 'react-native';
-import Animated, {
+import {
   useAnimatedStyle,
   useSharedValue,
   withRepeat,
   withTiming,
 } from 'react-native-reanimated';
+
+import { Animated } from '../Animated';
 
 interface SkeletonProps {
   className?: string;

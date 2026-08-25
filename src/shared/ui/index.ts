@@ -1,3 +1,4 @@
+export { Animated } from './Animated';
 export { Badge } from './Badge';
 export { Button, type ButtonProps } from './Button';
 export { Card } from './Card';

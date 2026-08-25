@@ -8,10 +8,21 @@ export interface InputProps extends TextInputProps {
   error?: string;
   hint?: string;
   containerClassName?: string;
+  /** Extra classes for the field itself; merged so focus/error styling still applies. */
+  inputClassName?: string;
 }
 
 export const Input = forwardRef<TextInput, InputProps>(function Input(
-  { label, error, hint, containerClassName = '', onFocus, onBlur, ...rest },
+  {
+    label,
+    error,
+    hint,
+    containerClassName = '',
+    inputClassName = '',
+    onFocus,
+    onBlur,
+    ...rest
+  },
   ref,
 ) {
   const [focused, setFocused] = useState(false);
@@ -42,7 +53,7 @@ export const Input = forwardRef<TextInput, InputProps>(function Input(
           setFocused(false);
           onBlur?.(event);
         }}
-        className={`min-h-[52px] rounded-control border bg-surface px-4 py-3 text-base text-ink ${borderClass}`}
+        className={`min-h-[52px] rounded-control border bg-surface px-4 py-3 text-base text-ink ${borderClass} ${inputClassName}`}
         {...rest}
       />
       {error ? (

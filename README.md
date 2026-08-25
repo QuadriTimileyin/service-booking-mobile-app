@@ -64,6 +64,19 @@ npm test            # jest
 npx expo-doctor     # expo project health
 ```
 
+## Design
+
+The visual direction was drafted in [Stitch](https://stitch.withgoogle.com) and
+then rebuilt properly in React Native with NativeWind — the generated screens
+were a reference for hierarchy, spacing and component treatment, not code to
+paste in.
+
+The resulting design system is small on purpose: a single blue primary
+(`#2563EB`), a slate neutral ramp, one card treatment, one button component with
+four variants, and a 4/8px spacing scale. Tokens live in `tailwind.config.js`,
+mirrored in `shared/config/theme.ts` for the JavaScript APIs (navigation theme,
+icons, refresh control) that cannot consume Tailwind classes.
+
 ## Architecture
 
 The project uses **Feature-Sliced Design (FSD)**: the codebase is split into
